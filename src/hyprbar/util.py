@@ -1,6 +1,7 @@
 # Utils Functions
 #
 import os
+import subprocess
 from rich.console import Console
 from hyprbar.constants import SPACES_DEFAULT
 
@@ -28,3 +29,11 @@ def configDirExists(configDir: str) -> bool:
         return True
     else:
         return False
+
+
+def executeCommand(command: str) -> tuple[int, str, str]:
+    process = subprocess.Popen(
+        command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
+    )
+    stdout, stderr = process.communicate()
+    return process.returncode, stdout, stderr

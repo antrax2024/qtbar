@@ -3,7 +3,8 @@ import sys
 import signal
 from PyQt6.QtWidgets import QApplication, QMainWindow
 from PyQt6.QtGui import QGuiApplication
-from hyprbar.constants import APP_NAME
+from hyprbar.constants import APP_NAME, WINDOW_RULES
+from hyprbar.util import executeCommand
 
 
 class Window(QMainWindow):
@@ -23,6 +24,7 @@ if __name__ == "__main__":
     os.environ["QT_WAYLAND_DISABLE_WINDOWDECORATION"] = "1"
     os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "0"
     os.environ["QT_SCALE_FACTOR"] = "1"
+    executeCommand(WINDOW_RULES[0])
     app = QApplication(sys.argv)
     window = Window()
     window.show()
