@@ -21,6 +21,7 @@ def cli() -> None:
 
         # Check Config directory
         exists = configDirExists(configDir=CONFIG_DIR)
+        cl.print(f"Diectory exists? ===> {exists}")
         if exists:
             showStatus(
                 "Config Dir",
@@ -45,7 +46,7 @@ def cli() -> None:
 
         else:
             showStatus(
-                "Config File",
+                "Config Dir",
                 f"{CONFIG_DIR} [bold red][{exists}][/bold red]",
             )
             showError("Config directory does not exist. Exiting...")
