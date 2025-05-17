@@ -1,25 +1,20 @@
 [project]
-name = "qtbar"
+name = "hyprbar"
 version = "0.0.2"
 description = "Add your description here"
 readme = "README.md"
 license = { text = "MIT" }
 authors = [{ name = "Antrax", email = "fredcox@gmail.com" }]
 requires-python = ">=3.13"
-dependencies = [
-    "click>=8.2.0",
- "confz>=2.1.0",
- "pyqt6>=6.9.0",
- "rich>=14.0.0",
-]
+dependencies = ["click>=8.2.0", "confz>=2.1.0", "pyqt6>=6.9.0", "rich>=14.0.0"]
 
 
 [project.urls]
-homepage = "https://github.com/antrax2024/qtbar"
-Repository = "https://github.com/antrax2024/qtbar"
+homepage = "https://github.com/antrax2024/hyprbar"
+Repository = "https://github.com/antrax2024/hyprbar"
 
 [project.scripts]
-qtbar = "qtbar:main"
+hyprbar = "hyprbar:main"
 
 [build-system]
 requires = ["hatchling"]

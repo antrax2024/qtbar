@@ -1,17 +1,17 @@
-# Command Line Interface for qtbar
+# Command Line Interface for hyprbar
 # Using click for command line interface
 import sys
 import click
 
-from qtbar.config import QtbarConfig
-from qtbar.util import cl, configDirExists, showStatus, showError, configFileExists
-from qtbar.constants import APP_NAME, APP_VERSION, CONFIG_DIR, CONFIG_FILE
+from hyprbar.config import HyprbarConfig
+from hyprbar.util import cl, configDirExists, showStatus, showError, configFileExists
+from hyprbar.constants import APP_NAME, APP_VERSION, CONFIG_DIR, CONFIG_FILE
 
 
 @click.command()
 def cli() -> None:
     """
-    Command line interface for qtbar.
+    Command line interface for hyprbar.
     """
 
     try:
@@ -34,7 +34,7 @@ def cli() -> None:
                     f"{CONFIG_FILE} [bold green][{exists}][/bold green]",
                 )
                 try:
-                    qtbarConfig = QtbarConfig()
+                    hyprbarConfig = HyprbarConfig()
                     showStatus(
                         "Config Valid",
                         "Configuration loaded and validated [bold green][Success][/bold green]",

@@ -8,7 +8,7 @@
 # **Note**: While camelCase conflicts with PEP8's snake_case recommendation
 # for Python, this requirement takes precedence per project specifications
 def main() -> None:
-    from qtbar.cli import cli
+    from hyprbar.cli import cli
 
     # call Command Line Interface
     cli()

@@ -4,7 +4,7 @@
 # confz provides type validation and default values for configuration parameters.
 #
 from confz import BaseConfig, FileSource
-from qtbar.constants import CONFIG_FILE
+from hyprbar.constants import CONFIG_FILE
 
 
 class WindowConfig(BaseConfig):
@@ -20,7 +20,7 @@ class WindowConfig(BaseConfig):
     height: int = 150
 
 
-class QtbarConfig(BaseConfig):
+class HyprbarConfig(BaseConfig):
     """
     Main configuration class for qtbar.
 

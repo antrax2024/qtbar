@@ -2,7 +2,7 @@
 #
 import os
 from rich.console import Console
-from qtbar.constants import SPACES_DEFAULT
+from hyprbar.constants import SPACES_DEFAULT
 
 cl = Console()
 
