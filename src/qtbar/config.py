@@ -20,7 +20,7 @@ class WindowConfig(BaseConfig):
     height: int = 150
 
 
-class qtbarConfig(BaseConfig):
+class QtbarConfig(BaseConfig):
     """
     Main configuration class for qtbar.
 

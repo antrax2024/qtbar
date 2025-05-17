@@ -3,7 +3,7 @@
 import sys
 import click
 
-# from qtbar.config import qtbarConfig
+from qtbar.config import QtbarConfig
 from qtbar.util import cl, configDirExists, showStatus, showError, configFileExists
 from qtbar.constants import APP_NAME, APP_VERSION, CONFIG_DIR, CONFIG_FILE
 
@@ -21,7 +21,6 @@ def cli() -> None:
 
         # Check Config directory
         exists = configDirExists(configDir=CONFIG_DIR)
-        cl.print(f"Diectory exists? ===> {exists}")
         if exists:
             showStatus(
                 "Config Dir",
@@ -34,16 +33,17 @@ def cli() -> None:
                     "Config File",
                     f"{CONFIG_FILE} [bold green][{exists}][/bold green]",
                 )
-                # qtbarConfig = qtbarConfig()
-                # showStatus("qtbarConfig", f"{qtbarConfig}")
+                try:
+                    qtbarConfig = QtbarConfig()
+                    showStatus(
+                        "Config Valid",
+                        "Configuration loaded and validated [bold green][Success][/bold green]",
+                    )
+                except Exception as e:
+                    showError(f"Invalid config file => {e}")
             else:
-                showStatus(
-                    "Config File",
-                    f"{CONFIG_FILE} [bold red][{exists}][/bold red]",
-                )
                 showError("Config file does not exist. Exiting...")
                 sys.exit(1)
-
         else:
             showStatus(
                 "Config Dir",
