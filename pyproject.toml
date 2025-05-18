@@ -1,17 +1,16 @@
 [project]
 name = "hyprbar"
-version = "0.0.2"
+version = "0.0.3"
 description = "Add your description here"
 readme = "README.md"
 license = { text = "MIT" }
 authors = [{ name = "Antrax", email = "fredcox@gmail.com" }]
 requires-python = ">=3.13"
 dependencies = [
-    "click>=8.2.0",
- "confz>=2.1.0",
- "pygobject>=3.52.3",
- "pyqt6>=6.9.0",
- "rich>=14.0.0",
+  "click>=8.2.0",
+  "confz>=2.1.0",
+  "pygobject>=3.52.3",
+  "rich>=14.0.0",
 ]
 
 
