@@ -40,6 +40,15 @@ def configDirExists(configDir: str) -> bool:
 
 
 def executeCommand(command: str) -> tuple[int, str, str]:
+    """
+    Executes a shell command and returns its exit code, standard output, and standard error.
+
+    Args:
+        command (str): The shell command to execute.
+
+    Returns:
+        tuple[int, str, str]: A tuple containing the exit code, stdout, and stderr.
+    """
     process = subprocess.Popen(
         command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
     )
