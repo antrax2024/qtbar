@@ -8,7 +8,7 @@ gi.require_version("Gtk4LayerShell", "1.0")
 from gi.repository import Gtk, Gtk4LayerShell  # pyright: ignore # noqa
 
 
-class StatusBarApp(Gtk.Application):
+class HyprBar(Gtk.Application):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.connect("activate", self.on_activate)
@@ -30,5 +30,5 @@ class StatusBarApp(Gtk.Application):
 
 
 if __name__ == "__main__":
-    app = StatusBarApp(application_id="com.example.StatusBar")
+    app = HyprBar(application_id="com.antrax.HyprBar")
     app.run()
