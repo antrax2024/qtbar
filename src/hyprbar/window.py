@@ -1,11 +1,11 @@
 from ctypes import CDLL
 
 CDLL("libgtk4-layer-shell.so")
-import gi
+import gi  # noqa
 
 gi.require_version("Gtk", "4.0")
 gi.require_version("Gtk4LayerShell", "1.0")
-from gi.repository import Gtk, Gtk4LayerShell
+from gi.repository import Gtk, Gtk4LayerShell  # pyright: ignore # noqa
 
 
 class StatusBarApp(Gtk.Application):
