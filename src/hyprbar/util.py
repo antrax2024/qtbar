@@ -17,8 +17,8 @@ def showError(message: str) -> None:
     cl.print(f"[bold red]{error:<{SPACES_DEFAULT}}[/bold red]: {message}")
 
 
-def configFileExists(configFile: str) -> bool:
-    if os.path.isfile(configFile):
+def fileExists(file: str) -> bool:
+    if os.path.isfile(file):
         return True
     else:
         return False

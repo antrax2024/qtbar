@@ -4,9 +4,9 @@ import sys
 import click
 
 from hyprbar.config import HyprbarConfig
-from hyprbar.util import cl, configDirExists, showStatus, showError, configFileExists
-from hyprbar.constants import APP_NAME, APP_VERSION, CONFIG_DIR, CONFIG_FILE
-from hyprbar.bar import runHyprBar
+from hyprbar.util import cl, configDirExists, showStatus, showError, fileExists
+from hyprbar.constants import APP_NAME, APP_VERSION, CONFIG_DIR, CONFIG_FILE, STYLE_FILE
+from hyprbar.bar import runHyprBar  # pyright: ignore # noqa
 
 
 @click.command()
@@ -28,7 +28,7 @@ def cli() -> None:
                 f"{CONFIG_DIR} [bold green][{exists}][/bold green]",
             )
             # Now test if config file exists
-            exists = configFileExists(configFile=CONFIG_FILE)
+            exists = fileExists(file=CONFIG_FILE)
             if exists:
                 showStatus(
                     "Config File",
@@ -40,7 +40,18 @@ def cli() -> None:
                         "Config Valid",
                         "Configuration loaded and validated [bold green][Success][/bold green]",
                     )
-                    runHyprBar()
+                    # test if style.css exists
+                    exists = fileExists(file=STYLE_FILE)
+                    if exists:
+                        showStatus(
+                            preamble="Style File",
+                            message=f"{STYLE_FILE} [bold green][{exists}][/bold green]",
+                        )
+                        runHyprBar()
+                    else:
+                        showError("Style file does not exists... Exiting...")
+                        sys.exit(1)
+
                 except Exception as e:
                     showError(f"Invalid config file => {e}")
             else:
