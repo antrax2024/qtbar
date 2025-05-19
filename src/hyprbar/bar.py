@@ -9,12 +9,23 @@ gi.require_version("Gtk4LayerShell", "1.0")
 from gi.repository import Gtk  # pyright: ignore #noqa
 from gi.repository import Gtk4LayerShell as LayerShell  # pyright: ignore #noqa
 from hyprbar.config import HyprbarConfig  # pyright: ignore # noqa
+from hyprbar.constants import STYLE_FILE  # pyright: ignore # noqa
+
 
 hyprBarConfig = None
 
 
 def on_activate(app):
     window = Gtk.Window(application=app)
+    window.set_name("hyprbar")
+    # Carregar CSS
+    css_provider = Gtk.CssProvider()
+    css_provider.load_from_path(f"{STYLE_FILE}")
+    display = window.get_display()
+    Gtk.StyleContext.add_provider_for_display(
+        display, css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+    )
+
     window.set_default_size(hyprBarConfig.window.width, hyprBarConfig.window.height)  # pyright: ignore # noqa
 
     LayerShell.init_for_window(window)
@@ -31,6 +42,7 @@ def on_activate(app):
     button.connect("clicked", lambda _: window.close())
 
     button2 = Gtk.Button(label="Ahhhhhhhh")
+    button2.set_name("meu-botao")
 
     gtkBbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
     gtkBbox.append(button)
