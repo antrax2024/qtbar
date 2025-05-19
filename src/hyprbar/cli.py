@@ -3,8 +3,8 @@
 import sys
 import click
 
-from hyprbar.config import HyprbarConfig
-from hyprbar.util import cl, configDirExists, showStatus, showError, fileExists
+from hyprbar.config import HyprbarConfig  # pyright: ignore # noqa
+from hyprbar.util import cl, showStatus, showError, fileExists
 from hyprbar.constants import APP_NAME, APP_VERSION, CONFIG_DIR, CONFIG_FILE, STYLE_FILE
 from hyprbar.bar import runHyprBar  # pyright: ignore # noqa
 
@@ -15,55 +15,26 @@ def cli() -> None:
     Command line interface for hyprbar.
     """
 
-    try:
-        cl.print(
-            f"[bold green]{APP_NAME}[/bold green] [bold blue]{APP_VERSION}[/bold blue]"
+    cl.print(
+        f"[bold green]{APP_NAME}[/bold green] [bold blue]{APP_VERSION}[/bold blue]"
+    )
+
+    configFileOk = fileExists(file=CONFIG_FILE)
+    if configFileOk:
+        showStatus(
+            "Config Dir",
+            f"{CONFIG_DIR} [bold green][{configFileOk}][/bold green]",
         )
+    else:
+        showError("Config file does not exist. Exiting...")
+        sys.exit(1)
 
-        # Check Config directory
-        exists = configDirExists(configDir=CONFIG_DIR)
-        if exists:
-            showStatus(
-                "Config Dir",
-                f"{CONFIG_DIR} [bold green][{exists}][/bold green]",
-            )
-            # Now test if config file exists
-            exists = fileExists(file=CONFIG_FILE)
-            if exists:
-                showStatus(
-                    "Config File",
-                    f"{CONFIG_FILE} [bold green][{exists}][/bold green]",
-                )
-                try:
-                    hyprbarConfig = HyprbarConfig()  # pyright: ignore # noqa
-                    showStatus(
-                        "Config Valid",
-                        "Configuration loaded and validated [bold green][Success][/bold green]",
-                    )
-                    # test if style.css exists
-                    exists = fileExists(file=STYLE_FILE)
-                    if exists:
-                        showStatus(
-                            preamble="Style File",
-                            message=f"{STYLE_FILE} [bold green][{exists}][/bold green]",
-                        )
-                        runHyprBar()
-                    else:
-                        showError("Style file does not exists... Exiting...")
-                        sys.exit(1)
-
-                except Exception as e:
-                    showError(f"Invalid config file => {e}")
-            else:
-                showError("Config file does not exist. Exiting...")
-                sys.exit(1)
-        else:
-            showStatus(
-                "Config Dir",
-                f"{CONFIG_DIR} [bold red][{exists}][/bold red]",
-            )
-            showError("Config directory does not exist. Exiting...")
-            sys.exit(1)
-
-    except Exception as e:
-        showError(f"{e}")
+    styleFileOk = fileExists(file=STYLE_FILE)
+    if styleFileOk:
+        showStatus(
+            preamble="Style File",
+            message=f"{STYLE_FILE} [bold green][{styleFileOk}][/bold green]",
+        )
+    else:
+        showError("Style file does not exists... Exiting...")
+        sys.exit(1)
