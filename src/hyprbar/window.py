@@ -15,14 +15,18 @@ from gi.repository import Gtk  # pyright: ignore #noqa
 from gi.repository import Gtk4LayerShell as LayerShell  # pyright: ignore #noqa
 
 
+def closeWindow(window: Gtk.Window) -> None:
+    window.close()
+
+
 def on_activate(app):
     window = Gtk.Window(application=app)
-    window.set_default_size(400, 70)
+    window.set_default_size(2560, 32)
 
     LayerShell.init_for_window(window)
     LayerShell.set_layer(window, LayerShell.Layer.TOP)
     LayerShell.set_anchor(window, LayerShell.Edge.BOTTOM, True)
-    LayerShell.set_margin(window, LayerShell.Edge.BOTTOM, 20)
+    LayerShell.set_margin(window, LayerShell.Edge.BOTTOM, 0)
     LayerShell.set_margin(window, LayerShell.Edge.TOP, 20)
     LayerShell.auto_exclusive_zone_enable(window)
 
@@ -32,6 +36,6 @@ def on_activate(app):
     window.present()
 
 
-app = Gtk.Application(application_id="com.github.wmww.gtk4-layer-shell.py-example")
+app = Gtk.Application(application_id="com.antrax.HyprBar")
 app.connect("activate", on_activate)
 app.run(None)
