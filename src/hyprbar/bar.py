@@ -8,15 +8,14 @@ gi.require_version("Gtk4LayerShell", "1.0")
 
 from gi.repository import Gtk  # pyright: ignore #noqa
 from gi.repository import Gtk4LayerShell as LayerShell  # pyright: ignore #noqa
+from hyprbar.config import HyprbarConfig
 
-
-def closeWindow(window: Gtk.Window) -> None:
-    window.close()
+hyprBarConfig = None
 
 
 def on_activate(app):
     window = Gtk.Window(application=app)
-    window.set_default_size(2560, 32)
+    window.set_default_size(1920, 32)
 
     LayerShell.init_for_window(window)
     LayerShell.set_layer(window, LayerShell.Layer.TOP)
@@ -31,10 +30,13 @@ def on_activate(app):
     window.present()
 
 
-def runHyprBar() -> None:
+def runHyprBar(config: HyprbarConfig) -> None:
     """
     HyprBar is a GTK4 Layer Shell bar for Hyprland.
     """
+    global hyprBarConfig
+    hyprBarConfig = config
+
     # Create the application
     app = Gtk.Application(application_id="com.antrax.HyprBar")
     app.connect("activate", on_activate)

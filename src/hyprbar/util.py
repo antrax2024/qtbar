@@ -17,6 +17,10 @@ from hyprbar.constants import SPACES_DEFAULT
 cl = Console()
 
 
+def printLine() -> None:
+    cl.print("[cyan]=[/cyan]" * 80)
+
+
 def showStatus(preamble: str, message: str) -> None:
     cl.print(f"[bold yellow]{preamble:<{SPACES_DEFAULT}}[/bold yellow]: {message}")
 
