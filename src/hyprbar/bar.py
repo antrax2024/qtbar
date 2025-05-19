@@ -15,7 +15,7 @@ hyprBarConfig = None
 
 def on_activate(app):
     window = Gtk.Window(application=app)
-    window.set_default_size(1920, 32)
+    window.set_default_size(hyprBarConfig.window.width, hyprBarConfig.window.height)  # pyright: ignore # noqa
 
     LayerShell.init_for_window(window)
     LayerShell.set_layer(window, LayerShell.Layer.TOP)
