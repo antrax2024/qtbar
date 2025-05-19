@@ -1,4 +1,7 @@
-window.background {
-    background-color: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente */
-    border: 1px solid #000fff; /* Borda branca */
+
+#meu-botao {
+    background: #ff0000;
+    color: #fff;
 }
+
+
