@@ -2,11 +2,11 @@
 # Using click for command line interface
 import sys
 import click
-
+from rich.table import Table
+from hyprbar.bar import runHyprBar  # pyright: ignore # noqa
 from hyprbar.config import HyprbarConfig  # pyright: ignore # noqa
 from hyprbar.util import cl, showStatus, showError, fileExists, printLine
 from hyprbar.constants import APP_NAME, APP_VERSION, CONFIG_FILE, STYLE_FILE
-from hyprbar.bar import runHyprBar  # pyright: ignore # noqa
 
 
 @click.command()
@@ -17,26 +17,35 @@ def cli() -> None:
     cl.print(
         f"[bold green]{APP_NAME}[/bold green] [bold blue]{APP_VERSION}[/bold blue]"
     )
-    printLine()
+    # Criação da tabela
+    table = Table(show_header=True, header_style="bold magenta")
+    table.add_column("Item", justify="right")
+    table.add_column("Path")
+    table.add_column("Status", justify="center")
+
     configFileOk = fileExists(file=CONFIG_FILE)
-    showStatus(
+    styleFileOk = fileExists(file=STYLE_FILE)
+    table.add_row(
         "Config",
-        f"{CONFIG_FILE} {'[bold green]Passed[/bold green]' if configFileOk else '[bold red]Fail[/bold red]'}",
+        f"[yellow]{CONFIG_FILE}[/yellow]",
+        f"{'[bold green]Passed[/bold green]' if configFileOk else '[bold red]Fail[/bold red]'}",
     )
+    table.add_row(
+        "Style",
+        f"[yellow]{STYLE_FILE}[/yellow]",
+        f"{'[bold green]Passed[/bold green]' if styleFileOk else '[bold red]Fail[/bold red]'}",
+    )
+
+    cl.print(table)
+
     if not configFileOk:
         showError(f"{CONFIG_FILE} does not exist. Exiting...")
         sys.exit(1)
 
-    styleFileOk = fileExists(file=STYLE_FILE)
-    showStatus(
-        preamble="Style",
-        message=f"{STYLE_FILE} {'[bold green]Passed[/bold green]' if styleFileOk else '[bold red]Fail[/bold red]'}",
-    )
     if not styleFileOk:
         showError("Style file does not exists... Exiting...")
         sys.exit(1)
 
-    printLine()
     try:
         hyprbarConfig = HyprbarConfig()  # pyright: ignore # noqa
         cl.log("Starting HyprBar...")
