@@ -5,7 +5,7 @@ import click
 from rich.table import Table
 from hyprbar.bar import runHyprBar  # pyright: ignore # noqa
 from hyprbar.config import HyprbarConfig  # pyright: ignore # noqa
-from hyprbar.util import cl, showStatus, showError, fileExists, printLine
+from hyprbar.util import cl, showError, fileExists
 from hyprbar.constants import APP_NAME, APP_VERSION, CONFIG_FILE, STYLE_FILE
 
 
