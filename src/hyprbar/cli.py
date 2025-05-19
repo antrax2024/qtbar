@@ -17,6 +17,8 @@ def cli() -> None:
     cl.print(
         f"[bold green]{APP_NAME}[/bold green] [bold blue]{APP_VERSION}[/bold blue]"
     )
+
+    cl.print("Configuration Status...")
     # Criação da tabela
     table = Table(show_header=True, header_style="bold magenta")
     table.add_column("Item", justify="right")
@@ -48,7 +50,7 @@ def cli() -> None:
 
     try:
         hyprbarConfig = HyprbarConfig()  # pyright: ignore # noqa
-        cl.log("Starting HyprBar...")
+        cl.print("Starting GUI...")
         runHyprBar(config=hyprbarConfig)
     except Exception as e:
         showError(f"Error: {e}")
