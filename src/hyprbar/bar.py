@@ -8,7 +8,7 @@ gi.require_version("Gtk4LayerShell", "1.0")
 
 from gi.repository import Gtk  # pyright: ignore #noqa
 from gi.repository import Gtk4LayerShell as LayerShell  # pyright: ignore #noqa
-from hyprbar.config import HyprbarConfig
+from hyprbar.config import HyprbarConfig  # pyright: ignore # noqa
 
 hyprBarConfig = None
 
@@ -25,8 +25,15 @@ def on_activate(app):
     LayerShell.auto_exclusive_zone_enable(window)
 
     button = Gtk.Button(label="GTK4 Layer Shell with Python")
-    button.connect("clicked", lambda x: window.close())
-    window.set_child(button)
+    button.connect("clicked", lambda _: window.close())
+
+    button2 = Gtk.Button(label="Ahhhhhhhh")
+
+    gtkBbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+    gtkBbox.append(button)
+    gtkBbox.append(button2)
+
+    window.set_child(gtkBbox)
     window.present()
 
 
