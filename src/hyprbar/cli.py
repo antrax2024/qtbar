@@ -6,6 +6,7 @@ import click
 from hyprbar.config import HyprbarConfig
 from hyprbar.util import cl, configDirExists, showStatus, showError, configFileExists
 from hyprbar.constants import APP_NAME, APP_VERSION, CONFIG_DIR, CONFIG_FILE
+from hyprbar.bar import runHyprBar
 
 
 @click.command()
@@ -34,11 +35,12 @@ def cli() -> None:
                     f"{CONFIG_FILE} [bold green][{exists}][/bold green]",
                 )
                 try:
-                    hyprbarConfig = HyprbarConfig()
+                    hyprbarConfig = HyprbarConfig()  # pyright: ignore # noqa
                     showStatus(
                         "Config Valid",
                         "Configuration loaded and validated [bold green][Success][/bold green]",
                     )
+                    runHyprBar()
                 except Exception as e:
                     showError(f"Invalid config file => {e}")
             else:

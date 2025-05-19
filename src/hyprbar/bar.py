@@ -36,6 +36,11 @@ def on_activate(app):
     window.present()
 
 
-app = Gtk.Application(application_id="com.antrax.HyprBar")
-app.connect("activate", on_activate)
-app.run(None)
+def runHyprBar() -> None:
+    """
+    HyprBar is a GTK4 Layer Shell bar for Hyprland.
+    """
+    # Create the application
+    app = Gtk.Application(application_id="com.antrax.HyprBar")
+    app.connect("activate", on_activate)
+    app.run(None)
