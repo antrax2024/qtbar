@@ -1,5 +1,5 @@
 # HyprBar Configuration File
 
 window:
-  width: 1920 # The width of the window in pixels
+  width: 2560 # The width of the window in pixels
   height: 32 # The height of the window in pixels

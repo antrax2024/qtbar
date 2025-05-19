@@ -20,8 +20,11 @@ def on_activate(app):
     LayerShell.init_for_window(window)
     LayerShell.set_layer(window, LayerShell.Layer.TOP)
     LayerShell.set_anchor(window, LayerShell.Edge.BOTTOM, True)
+    # margins
     LayerShell.set_margin(window, LayerShell.Edge.BOTTOM, 0)
-    LayerShell.set_margin(window, LayerShell.Edge.TOP, 20)
+    LayerShell.set_margin(window, LayerShell.Edge.TOP, 0)
+
+    # Enable Exclusive Zone
     LayerShell.auto_exclusive_zone_enable(window)
 
     button = Gtk.Button(label="GTK4 Layer Shell with Python")

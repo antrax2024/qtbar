@@ -20,7 +20,7 @@ def cli() -> None:
 
     cl.print("Configuration Status...")
     # Criação da tabela
-    table = Table(show_header=True, header_style="bold magenta")
+    table = Table(show_header=True, header_style="bold cyan")
     table.add_column("Item", justify="right")
     table.add_column("Path")
     table.add_column("Status", justify="center")
