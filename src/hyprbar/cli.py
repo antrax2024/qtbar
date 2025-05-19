@@ -19,22 +19,20 @@ def cli() -> None:
     )
     printLine()
     configFileOk = fileExists(file=CONFIG_FILE)
-    if configFileOk:
-        showStatus(
-            "Config",
-            f"{CONFIG_FILE} [bold green][{configFileOk}][/bold green]",
-        )
-    else:
+    showStatus(
+        "Config",
+        f"{CONFIG_FILE} {'[bold green]Passed[/bold green]' if configFileOk else '[bold red]Fail[/bold red]'}",
+    )
+    if not configFileOk:
         showError(f"{CONFIG_FILE} does not exist. Exiting...")
         sys.exit(1)
 
     styleFileOk = fileExists(file=STYLE_FILE)
-    if styleFileOk:
-        showStatus(
-            preamble="Style",
-            message=f"{STYLE_FILE} [bold green][{styleFileOk}][/bold green]",
-        )
-    else:
+    showStatus(
+        preamble="Style",
+        message=f"{STYLE_FILE} {'[bold green]Passed[/bold green]' if styleFileOk else '[bold red]Fail[/bold red]'}",
+    )
+    if not styleFileOk:
         showError("Style file does not exists... Exiting...")
         sys.exit(1)
 
