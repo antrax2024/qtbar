@@ -6,20 +6,27 @@
 }
 
 
-#buttonLeft {
+#labelLeft {
     background: #f26337;
     color: #fff;
 }
 
-#buttonCenter {
+#labelCenter {
     background: #924b1d;
     color: #fff;
 }
 
-#buttonRight {
+#label1 {
     background: #334d2d;
     color: #fff;
 }
+
+
+#label2{
+    background: #334d2d;
+    color: #fff;
+}
+
 
 
 

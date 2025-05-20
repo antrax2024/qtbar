@@ -11,8 +11,9 @@ from typing import List, Optional
 class ComponentConfig(BaseConfig):
     type: str  # label, button, progressbar, etc.
     text: Optional[str] = None
-    value: Optional[str] = None  # Para progressbar, etc.
-    on_click: Optional[str] = None  # Para ações de botão
+    value: Optional[str] = None
+    on_click: Optional[str] = None
+    css_id: str
 
 
 class ContainerConfig(BaseConfig):

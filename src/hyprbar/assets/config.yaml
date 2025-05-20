@@ -17,10 +17,13 @@ window:
     components:
       - type: label
         text: "clock"
+        css_id: "labelCenter"
 
   right_container:
     components:
       - type: label
         text: "label 1"
+        css_id: "label1"
       - type: label
         text: "label2"
+        css_id: "label2"

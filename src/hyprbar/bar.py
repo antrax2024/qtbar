@@ -101,6 +101,7 @@ def create_widget(component):
 def populate_box(box, components):
     for comp in components:
         widget = create_widget(comp)
+        widget.set_name(comp.css_id)  # pyright: ignore # noqa
         if widget:
             box.append(widget)  # Para GTK4, use append
 
