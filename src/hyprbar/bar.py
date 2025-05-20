@@ -32,10 +32,15 @@ def on_activate(app):
     LayerShell.set_layer(window, LayerShell.Layer.TOP)
 
     # Anchor
-    LayerShell.set_anchor(window, LayerShell.Edge.BOTTOM, True)
+    # LayerShell.set_anchor(window, LayerShell.Edge.BOTTOM, True)
+    LayerShell.set_anchor(window, ANCHOR[hyprBarConfig.window.anchor], True)  # pyright: ignore # noqa
     # margins
-    LayerShell.set_margin(window, LayerShell.Edge.BOTTOM, 0)
-    LayerShell.set_margin(window, LayerShell.Edge.TOP, 0)
+    LayerShell.set_margin(
+        window,
+        LayerShell.Edge.BOTTOM,
+        hyprBarConfig.window.margin_bottom,  # pyright: ignore # noqa
+    )
+    LayerShell.set_margin(window, LayerShell.Edge.TOP, hyprBarConfig.window.margin_top)  # pyright: ignore # noqa
 
     # Enable Exclusive Zone
     LayerShell.auto_exclusive_zone_enable(window)
