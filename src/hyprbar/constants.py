@@ -11,7 +11,7 @@ CONFIG_FILE = os.path.join(CONFIG_DIR, "config.yaml")
 STYLE_FILE = os.path.join(CONFIG_DIR, "styles.css")
 
 
-ANCHORS = [
-    {"top": LayerShell.Edge.TOP},
-    {"bottom": LayerShell.Edge.BOTTOM},
-]
+ANCHOR = {
+    "top": LayerShell.Edge.TOP,
+    "bottom": LayerShell.Edge.BOTTOM,
+}

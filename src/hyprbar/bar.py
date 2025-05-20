@@ -9,7 +9,7 @@ gi.require_version("Gtk4LayerShell", "1.0")
 from gi.repository import Gtk  # pyright: ignore #noqa
 from gi.repository import Gtk4LayerShell as LayerShell  # pyright: ignore #noqa
 from hyprbar.config import HyprbarConfig  # pyright: ignore # noqa
-from hyprbar.constants import STYLE_FILE  # pyright: ignore # noqa
+from hyprbar.constants import STYLE_FILE, ANCHOR  # pyright: ignore # noqa
 
 
 hyprBarConfig = None
