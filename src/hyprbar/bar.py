@@ -43,13 +43,15 @@ def on_activate(app):
     LayerShell.set_margin(window, LayerShell.Edge.TOP, hyprBarConfig.window.margin_top)  # pyright: ignore # noqa
 
     mainBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+    # faz com que todos os widgets filhos ocupem o mesmo espaço
+    # horizontalmente
+    mainBox.set_homogeneous(True)
 
     window.set_child(mainBox)
 
     # Enable Exclusive Zone
     LayerShell.auto_exclusive_zone_enable(window)
 
-    # TODO: Adicionar e corrigir aqui
     buttonLeft = Gtk.Button(label="Left")
     buttonLeft.set_name("buttonLeft")
 
@@ -60,6 +62,7 @@ def on_activate(app):
     buttonRight.set_name("buttonRight")
 
     leftGtkBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+    # leftGtkBox.h_align
     centerGtkBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
     rightGtkBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
 
