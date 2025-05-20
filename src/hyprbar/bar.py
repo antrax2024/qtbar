@@ -62,9 +62,11 @@ def on_activate(app):
     buttonRight.set_name("buttonRight")
 
     leftGtkBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
-    # leftGtkBox.h_align
+    leftGtkBox.set_halign(Gtk.Align.START)
     centerGtkBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+    centerGtkBox.set_halign(Gtk.Align.CENTER)
     rightGtkBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+    rightGtkBox.set_halign(Gtk.Align.END)
 
     mainBox.append(leftGtkBox)
     mainBox.append(centerGtkBox)
