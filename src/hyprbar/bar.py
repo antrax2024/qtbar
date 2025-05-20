@@ -15,10 +15,6 @@ from hyprbar.constants import STYLE_FILE  # pyright: ignore # noqa
 hyprBarConfig = None
 
 
-# TODO: Implementardepois
-# FIXME: ok
-# YOUTUBE: https://www.youtube.com/watch?v=0vX1a2g3k4E
-# URL: https://google.com
 def on_activate(app):
     window = Gtk.Window(application=app)
     window.set_name("hyprbar")
@@ -48,11 +44,11 @@ def on_activate(app):
     button2 = Gtk.Button(label="Ahhhhhhhh")
     button2.set_name("meu-botao")
 
-    gtkBbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
-    gtkBbox.append(button)
-    gtkBbox.append(button2)
+    mainBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+    mainBox.append(button)
+    mainBox.append(button2)
 
-    window.set_child(gtkBbox)
+    window.set_child(mainBox)
     window.present()
 
 
