@@ -7,6 +7,18 @@ from confz import BaseConfig, FileSource
 from hyprbar.constants import CONFIG_FILE
 
 
+class LeftContainer(BaseConfig):
+    pass
+
+
+class CenterContainer(BaseConfig):
+    pass
+
+
+class RightContainer(BaseConfig):
+    pass
+
+
 class WindowConfig(BaseConfig):
     """
     Configuration class for window appearance settings.
@@ -21,6 +33,10 @@ class WindowConfig(BaseConfig):
     margin_top: int
     width: int
     height: int
+
+    leftcontainer: LeftContainer
+    centercontainer: CenterContainer
+    rightcontainer: RightContainer
 
 
 class HyprbarConfig(BaseConfig):
