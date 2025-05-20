@@ -1,5 +1,8 @@
 # HyprBar Configuration File
 
 window:
+  anchor: bottom # top, left, right or bottom
+  margin_top: 0
+  margin_bottom: 0
   width: 2560 # The width of the window in pixels
   height: 32 # The height of the window in pixels

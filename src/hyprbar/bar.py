@@ -30,6 +30,8 @@ def on_activate(app):
 
     LayerShell.init_for_window(window)
     LayerShell.set_layer(window, LayerShell.Layer.TOP)
+
+    # Anchor
     LayerShell.set_anchor(window, LayerShell.Edge.BOTTOM, True)
     # margins
     LayerShell.set_margin(window, LayerShell.Edge.BOTTOM, 0)

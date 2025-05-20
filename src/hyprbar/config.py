@@ -16,8 +16,11 @@ class WindowConfig(BaseConfig):
         height (int): The height of the window in pixels. Default: 150
     """
 
-    width: int = 400
-    height: int = 150
+    anchor: str
+    margin_bottom: int
+    margin_top: int
+    width: int
+    height: int
 
 
 class HyprbarConfig(BaseConfig):
