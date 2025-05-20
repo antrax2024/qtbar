@@ -17,6 +17,7 @@ class ComponentConfig(BaseConfig):
 
 
 class ContainerConfig(BaseConfig):
+    hor_spacing: int = 4  # horizontal spacing
     components: List[ComponentConfig] = []
 
 

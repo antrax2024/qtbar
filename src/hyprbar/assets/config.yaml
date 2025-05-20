@@ -8,18 +8,21 @@ window:
   height: 32 # The height of the window in pixels
 
   left_container:
+    hor_spacing: 6
     components:
       - type: label
         text: "Label Convencional"
         css_id: "labelLeft"
 
   center_container:
+    hor_spacing: 6
     components:
       - type: label
         text: "clock"
         css_id: "labelCenter"
 
   right_container:
+    hor_spacing: 6
     components:
       - type: label
         text: "label 1"

@@ -61,11 +61,20 @@ def on_activate(app):
     # buttonRight = Gtk.Button(label="Right")
     # buttonRight.set_name("buttonRight")
 
-    leftGtkBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+    leftGtkBox = Gtk.Box(
+        orientation=Gtk.Orientation.HORIZONTAL,
+        spacing=hyprBarConfig.window.left_container.hor_spacing,  # pyright: ignore # noqa
+    )
     leftGtkBox.set_halign(Gtk.Align.START)
-    centerGtkBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+    centerGtkBox = Gtk.Box(
+        orientation=Gtk.Orientation.HORIZONTAL,
+        spacing=hyprBarConfig.window.center_container.hor_spacing,  # pyright: ignore # noqa
+    )  # pyright: ignore # noqa
     centerGtkBox.set_halign(Gtk.Align.CENTER)
-    rightGtkBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+    rightGtkBox = Gtk.Box(
+        orientation=Gtk.Orientation.HORIZONTAL,
+        spacing=hyprBarConfig.window.right_container.hor_spacing,  # pyright: ignore # noqa
+    )  # pyright: ignore # noqa
     rightGtkBox.set_halign(Gtk.Align.END)
 
     mainBox.append(leftGtkBox)
