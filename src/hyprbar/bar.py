@@ -52,14 +52,14 @@ def on_activate(app):
     # Enable Exclusive Zone
     LayerShell.auto_exclusive_zone_enable(window)
 
-    buttonLeft = Gtk.Button(label="Left")
-    buttonLeft.set_name("buttonLeft")
-
-    buttonCenter = Gtk.Button(label="Center")
-    buttonCenter.set_name("buttonCenter")
-
-    buttonRight = Gtk.Button(label="Right")
-    buttonRight.set_name("buttonRight")
+    # buttonLeft = Gtk.Button(label="Left")
+    # buttonLeft.set_name("buttonLeft")
+    #
+    # buttonCenter = Gtk.Button(label="Center")
+    # buttonCenter.set_name("buttonCenter")
+    #
+    # buttonRight = Gtk.Button(label="Right")
+    # buttonRight.set_name("buttonRight")
 
     leftGtkBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
     leftGtkBox.set_halign(Gtk.Align.START)
@@ -72,11 +72,37 @@ def on_activate(app):
     mainBox.append(centerGtkBox)
     mainBox.append(rightGtkBox)
 
-    leftGtkBox.append(buttonLeft)
-    centerGtkBox.append(buttonCenter)
-    rightGtkBox.append(buttonRight)
+    populate_box(leftGtkBox, hyprBarConfig.window.left_container.components)  # pyright: ignore # noqa
+    populate_box(centerGtkBox, hyprBarConfig.window.center_container.components)  # pyright: ignore # noqa
+    populate_box(rightGtkBox, hyprBarConfig.window.right_container.components)  # pyright: ignore # noqa
+
+    # leftGtkBox.append(buttonLeft)
+    # centerGtkBox.append(buttonCenter)
+    # rightGtkBox.append(buttonRight)
 
     window.present()
+
+
+def create_widget(component):
+    if component.type == "label":
+        return Gtk.Label(label=component.text)
+    elif component.type == "button":
+        btn = Gtk.Button(label=component.text)
+        # Aqui você pode conectar o sinal "clicked" a uma função baseada no on_click
+        return btn
+    elif component.type == "progressbar":
+        pb = Gtk.ProgressBar()
+        # Defina o valor conforme necessário
+        return pb
+    # Adicione outros tipos conforme necessário
+    return None
+
+
+def populate_box(box, components):
+    for comp in components:
+        widget = create_widget(comp)
+        if widget:
+            box.append(widget)  # Para GTK4, use append
 
 
 def runHyprBar(config: HyprbarConfig) -> None:

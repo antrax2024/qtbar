@@ -5,18 +5,18 @@
 #
 from confz import BaseConfig, FileSource
 from hyprbar.constants import CONFIG_FILE
+from typing import List, Optional
 
 
-class LeftContainer(BaseConfig):
-    pass
+class ComponentConfig(BaseConfig):
+    type: str  # label, button, progressbar, etc.
+    text: Optional[str] = None
+    value: Optional[str] = None  # Para progressbar, etc.
+    on_click: Optional[str] = None  # Para ações de botão
 
 
-class CenterContainer(BaseConfig):
-    pass
-
-
-class RightContainer(BaseConfig):
-    pass
+class ContainerConfig(BaseConfig):
+    components: List[ComponentConfig] = []
 
 
 class WindowConfig(BaseConfig):
@@ -34,9 +34,9 @@ class WindowConfig(BaseConfig):
     width: int
     height: int
 
-    leftcontainer: LeftContainer
-    centercontainer: CenterContainer
-    rightcontainer: RightContainer
+    left_container: ContainerConfig
+    center_container: ContainerConfig
+    right_container: ContainerConfig
 
 
 class HyprbarConfig(BaseConfig):

@@ -6,3 +6,23 @@ window:
   margin_bottom: 0
   width: 2560 # The width of the window in pixels
   height: 32 # The height of the window in pixels
+
+  left_container:
+    components:
+      - type: label
+        text: "Label Convencional"
+      - type: button
+        text: "Botão"
+        on_click: "click_botao"
+
+  center_container:
+    components:
+      - type: label
+        text: "clock"
+
+  right_container:
+    components:
+      - type: label
+        text: "label 1"
+      - type: label
+        text: "label2"
