@@ -45,17 +45,32 @@ def on_activate(app):
     # Enable Exclusive Zone
     LayerShell.auto_exclusive_zone_enable(window)
 
-    button = Gtk.Button(label="GTK4 Layer Shell with Python")
-    button.connect("clicked", lambda _: window.close())
+    # TODO: Adicionar e corrigir aqui
+    buttonLeft = Gtk.Button(label="Ahhhhhhhh")
+    button.set_name("buttonLeft")
 
-    button2 = Gtk.Button(label="Ahhhhhhhh")
-    button2.set_name("meu-botao")
+    buttonCenter = Gtk.Button(label="Ahhhhhhhh")
+    button.set_name("buttonCenter")
+
+    buttonRight = Gtk.Button(label="Ahhhhhhhh")
+    button.set_name("buttonRight")
 
     mainBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
-    mainBox.append(button)
-    mainBox.append(button2)
 
     window.set_child(mainBox)
+
+    leftGtkBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+    centerGtkBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+    rightGtkBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+
+    mainBox.append(leftGtkBox)
+    mainBox.append(centerGtkBox)
+    mainBox.append(rightGtkBox)
+
+    # leftGtkBox.append(button)
+    # centerGtkBox.append(button)
+    # rightGtkBox.append(button)
+
     window.present()
 
 
