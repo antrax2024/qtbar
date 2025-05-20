@@ -15,6 +15,10 @@ from hyprbar.constants import STYLE_FILE  # pyright: ignore # noqa
 hyprBarConfig = None
 
 
+# TODO: Implementardepois
+# FIXME: ok
+# YOUTUBE: https://www.youtube.com/watch?v=0vX1a2g3k4E
+# URL: https://google.com
 def on_activate(app):
     window = Gtk.Window(application=app)
     window.set_name("hyprbar")
