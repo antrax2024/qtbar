@@ -11,9 +11,7 @@ window:
     components:
       - type: label
         text: "Label Convencional"
-      - type: button
-        text: "Botão"
-        on_click: "click_botao"
+        css_id: "labelLeft"
 
   center_container:
     components:
