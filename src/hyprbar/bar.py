@@ -52,15 +52,6 @@ def on_activate(app):
     # Enable Exclusive Zone
     LayerShell.auto_exclusive_zone_enable(window)
 
-    # buttonLeft = Gtk.Button(label="Left")
-    # buttonLeft.set_name("buttonLeft")
-    #
-    # buttonCenter = Gtk.Button(label="Center")
-    # buttonCenter.set_name("buttonCenter")
-    #
-    # buttonRight = Gtk.Button(label="Right")
-    # buttonRight.set_name("buttonRight")
-
     leftGtkBox = Gtk.Box(
         orientation=Gtk.Orientation.HORIZONTAL,
         spacing=hyprBarConfig.window.left_container.hor_spacing,  # pyright: ignore # noqa
@@ -84,10 +75,6 @@ def on_activate(app):
     populate_box(leftGtkBox, hyprBarConfig.window.left_container.components)  # pyright: ignore # noqa
     populate_box(centerGtkBox, hyprBarConfig.window.center_container.components)  # pyright: ignore # noqa
     populate_box(rightGtkBox, hyprBarConfig.window.right_container.components)  # pyright: ignore # noqa
-
-    # leftGtkBox.append(buttonLeft)
-    # centerGtkBox.append(buttonCenter)
-    # rightGtkBox.append(buttonRight)
 
     window.present()
 
