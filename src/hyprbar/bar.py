@@ -41,6 +41,7 @@ def on_activate(app):
     )
     window.set_default_size(hyprBarConfig.window.width, hyprBarConfig.window.height)  # pyright: ignore # noqa
 
+    printLog("Layer Shell initialized")
     LayerShell.init_for_window(window)
     LayerShell.set_layer(window, LayerShell.Layer.TOP)
 
@@ -58,6 +59,7 @@ def on_activate(app):
     mainBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
     # faz com que todos os widgets filhos ocupem o mesmo espaço
     # horizontalmente
+    printLog("Setting homogeneous to True for mainBox.")
     mainBox.set_homogeneous(True)
 
     window.set_child(mainBox)
@@ -65,6 +67,7 @@ def on_activate(app):
     # Enable Exclusive Zone
     LayerShell.auto_exclusive_zone_enable(window)
 
+    printLog("Creating leftGtkBox for window...")
     leftGtkBox = Gtk.Box(
         orientation=Gtk.Orientation.HORIZONTAL,
         spacing=hyprBarConfig.window.left_container.hor_spacing,  # pyright: ignore # noqa
@@ -72,12 +75,15 @@ def on_activate(app):
     leftGtkBox.set_halign(Gtk.Align.START)
     leftGtkBox.set_valign(Gtk.Align.CENTER)
 
+    printLog("Creating centerGtkBox for window...")
     centerGtkBox = Gtk.Box(
         orientation=Gtk.Orientation.HORIZONTAL,
         spacing=hyprBarConfig.window.center_container.hor_spacing,  # pyright: ignore # noqa
     )  # pyright: ignore # noqa
     centerGtkBox.set_halign(Gtk.Align.CENTER)
     centerGtkBox.set_valign(Gtk.Align.CENTER)
+
+    printLog("Creating rightGtkBox for window...")
     rightGtkBox = Gtk.Box(
         orientation=Gtk.Orientation.HORIZONTAL,
         spacing=hyprBarConfig.window.right_container.hor_spacing,  # pyright: ignore # noqa
@@ -89,10 +95,12 @@ def on_activate(app):
     mainBox.append(centerGtkBox)
     mainBox.append(rightGtkBox)
 
+    printLog("Populate boxes with widgets.")
     populateBox(leftGtkBox, hyprBarConfig.window.left_container.components)  # pyright: ignore # noqa
     populateBox(centerGtkBox, hyprBarConfig.window.center_container.components)  # pyright: ignore # noqa
     populateBox(rightGtkBox, hyprBarConfig.window.right_container.components)  # pyright: ignore # noqa
 
+    printLog("Show the window with all widgets.")
     window.present()
 
 
@@ -104,7 +112,7 @@ def populateBox(box, components):
         widget.set_name(comp.css_id)  # pyright: ignore # noqa
         # if Markup: Ok, set_markup
         if comp.markup:
-            widget.set_markup(comp.markup)
+            widget.set_markup(comp.markup)  # pyright: ignore # noqa
 
         # HACK: Se há refresh precisa criar uma thread aqui
         if comp.refresh > 0:
