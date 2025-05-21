@@ -9,7 +9,6 @@ requires-python = ">=3.13"
 dependencies = [
   "click>=8.2.0",
   "confz>=2.1.0",
-  "glib>=1.0.0",
   "pygobject>=3.52.3",
   "pygobject-stubs>=2.13.0",
   "rich>=14.0.0",

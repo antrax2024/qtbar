@@ -12,6 +12,7 @@ from gi.repository import GLib  # pyright: ignore # noqa
 
 from hyprbar.config import HyprbarConfig  # pyright: ignore # noqa
 from hyprbar.constants import STYLE_FILE, ANCHOR  # pyright: ignore # noqa
+from hyprbar.widgets import createWidget  # pyright: ignore # noqa
 
 
 hyprBarConfig = None
@@ -76,39 +77,18 @@ def on_activate(app):
     mainBox.append(centerGtkBox)
     mainBox.append(rightGtkBox)
 
-    populate_box(leftGtkBox, hyprBarConfig.window.left_container.components)  # pyright: ignore # noqa
-    populate_box(centerGtkBox, hyprBarConfig.window.center_container.components)  # pyright: ignore # noqa
-    populate_box(rightGtkBox, hyprBarConfig.window.right_container.components)  # pyright: ignore # noqa
+    populateBox(leftGtkBox, hyprBarConfig.window.left_container.components)  # pyright: ignore # noqa
+    populateBox(centerGtkBox, hyprBarConfig.window.center_container.components)  # pyright: ignore # noqa
+    populateBox(rightGtkBox, hyprBarConfig.window.right_container.components)  # pyright: ignore # noqa
 
     window.present()
 
 
-# TODO: Criar um componente do tipo workspace
-# Definir uma prop refresh que cria uma thread e atualiza o widget
-# definir um componente de clock que atualiza a cada disparo da thead
-# URL: https://docs.gtk.org/Pango/pango_markup.html
-def create_widget(component):
-    if component.type == "label":
-        return Gtk.Label(label=component.text)
-    elif component.type == "button":
-        btn = Gtk.Button(label=component.text)
-        # Aqui você pode conectar o sinal "clicked" a uma função baseada no on_click
-        return btn
-    elif component.type == "progressbar":
-        pb = Gtk.ProgressBar()
-        # Defina o valor conforme necessário
-        return pb
-
-    # Adicione outros tipos conforme necessário
-
-    return None
-
-
 # TODO: função necessária
 #  GLib.timeout_add_seconds(component.refresh, update_label)
-def populate_box(box, components):
+def populateBox(box, components):
     for comp in components:
-        widget = create_widget(comp)
+        widget = createWidget(comp)
         widget.set_name(comp.css_id)  # pyright: ignore # noqa
         # HACK: Se há refresh precisa criar uma thread aqui
         if comp.refresh > 0:
