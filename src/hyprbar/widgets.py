@@ -1,5 +1,6 @@
 from gi.repository import Gtk  # pyright: ignore #noqa
 
+
 # TODO: Criar um componente do tipo workspace
 # Definir uma prop refresh que cria uma thread e atualiza o widget
 # definir um componente de clock que atualiza a cada disparo da thead
