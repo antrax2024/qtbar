@@ -8,6 +8,8 @@ gi.require_version("Gtk4LayerShell", "1.0")
 
 from gi.repository import Gtk  # pyright: ignore #noqa
 from gi.repository import Gtk4LayerShell as LayerShell  # pyright: ignore #noqa
+from gi.repository import GLib
+
 from hyprbar.config import HyprbarConfig  # pyright: ignore # noqa
 from hyprbar.constants import STYLE_FILE, ANCHOR  # pyright: ignore # noqa
 
@@ -79,6 +81,11 @@ def on_activate(app):
     window.present()
 
 
+# TODO: Criar um componente do tipo workspace
+# Definir uma prop refresh que cria uma thread e atualiza o widget
+# definir um componente de clock que atualiza a cada disparo da thead
+#  GLib.timeout_add_seconds(component.refresh, update_label)
+#
 def create_widget(component):
     if component.type == "label":
         return Gtk.Label(label=component.text)
@@ -90,6 +97,7 @@ def create_widget(component):
         pb = Gtk.ProgressBar()
         # Defina o valor conforme necessário
         return pb
+
     # Adicione outros tipos conforme necessário
     return None
 
