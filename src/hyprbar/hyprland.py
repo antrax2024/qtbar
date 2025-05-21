@@ -8,6 +8,4 @@ instance = Hyprland()
 
 
 if __name__ == "__main__":
-    workspaces = instance.get_workspaces()
-    for workspace in workspaces:
-        print()
+    pass

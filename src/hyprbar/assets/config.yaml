@@ -10,9 +10,9 @@ window:
   left_container:
     hor_spacing: 6
     components:
-      - type: label
-        markup: '<span foreground="purple">Temp:</span><span foreground="green">89</span>C'
-        css_id: "labelLeft"
+      - type: workspaces
+        text: "1,2,3,4,5"
+        css_id: "workspaces"
 
   center_container:
     hor_spacing: 6

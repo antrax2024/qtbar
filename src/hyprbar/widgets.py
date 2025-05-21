@@ -9,6 +9,7 @@ from gi.repository import Gtk  # pyright: ignore #noqa
 
 def createWidget(component):
     if component.type == "workspaces":
+        # component.text
         pass
 
     elif component.type == "label":
