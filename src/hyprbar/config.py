@@ -12,6 +12,7 @@ class ComponentConfig(BaseConfig):
     type: str  # label, button, progressbar, etc.
     css_id: Optional[str] = None
     text: Optional[str] = None
+    markup: Optional[str] = None
     value: Optional[str] = None
     on_click: Optional[str] = None
     refresh: Optional[int] = 0

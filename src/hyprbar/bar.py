@@ -62,16 +62,20 @@ def on_activate(app):
         spacing=hyprBarConfig.window.left_container.hor_spacing,  # pyright: ignore # noqa
     )
     leftGtkBox.set_halign(Gtk.Align.START)
+    leftGtkBox.set_valign(Gtk.Align.CENTER)
+
     centerGtkBox = Gtk.Box(
         orientation=Gtk.Orientation.HORIZONTAL,
         spacing=hyprBarConfig.window.center_container.hor_spacing,  # pyright: ignore # noqa
     )  # pyright: ignore # noqa
     centerGtkBox.set_halign(Gtk.Align.CENTER)
+    centerGtkBox.set_valign(Gtk.Align.CENTER)
     rightGtkBox = Gtk.Box(
         orientation=Gtk.Orientation.HORIZONTAL,
         spacing=hyprBarConfig.window.right_container.hor_spacing,  # pyright: ignore # noqa
     )  # pyright: ignore # noqa
     rightGtkBox.set_halign(Gtk.Align.END)
+    rightGtkBox.set_valign(Gtk.Align.CENTER)
 
     mainBox.append(leftGtkBox)
     mainBox.append(centerGtkBox)
@@ -90,6 +94,10 @@ def populateBox(box, components):
     for comp in components:
         widget = createWidget(comp)
         widget.set_name(comp.css_id)  # pyright: ignore # noqa
+        # if Markup: Ok, set_markup
+        if comp.markup:
+            widget.set_markup(comp.markup)
+
         # HACK: Se há refresh precisa criar uma thread aqui
         if comp.refresh > 0:
             pass

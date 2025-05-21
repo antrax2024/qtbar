@@ -1,4 +1,10 @@
 
+* {
+    font-family: "Hack Nerd Font Propo", sans-serif;
+    font-size: 16px;
+}
+
+
 #hyprbar {
     background: rgba(0, 0, 0, 0.5);
     padding: 0px;
@@ -7,18 +13,18 @@
 
 
 #labelLeft {
-    background: #f26337;
-    color: #fff;
+    /* background: #f26337; */
+    /* color: #fff; */
 }
 
 #labelCenter {
-    background: #924b1d;
-    color: #fff;
+    /* background: #924b1d; */
+    /* color: #fff; */
 }
 
 #label1 {
-    background: #334d2d;
-    color: #fff;
+    /* background: #334d2d; */
+    /* color: #fff; */
 }
 
 

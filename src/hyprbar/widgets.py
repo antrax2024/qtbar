@@ -3,11 +3,13 @@ from gi.repository import Gtk  # pyright: ignore #noqa
 # TODO: Criar um componente do tipo workspace
 # Definir uma prop refresh que cria uma thread e atualiza o widget
 # definir um componente de clock que atualiza a cada disparo da thead
+# label.set_markup('<span foreground="purple">Temperatura:</span> <span foreground="green">20°C</span>')
 
 
 def createWidget(component):
     if component.type == "workspaces":
         pass
+
     elif component.type == "label":
         return Gtk.Label(label=component.text)
     elif component.type == "button":
