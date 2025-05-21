@@ -13,6 +13,7 @@ from gi.repository import GLib  # pyright: ignore # noqa
 from hyprbar.config import HyprbarConfig  # pyright: ignore # noqa
 from hyprbar.constants import STYLE_FILE, ANCHOR  # pyright: ignore # noqa
 from hyprbar.widgets import createWidget  # pyright: ignore # noqa
+from hyprbar.util import printLog  # pyright: ignore # noqa
 
 
 hyprBarConfig = None
@@ -21,16 +22,23 @@ index = 0
 
 
 def on_activate(app):
+    printLog("on activate triggered")
     window = Gtk.Window(application=app)
+    printLog("window created, setting properties for hyprbar window instance: ")
     window.set_name("hyprbar")
     # Carregar CSS
+    printLog("Setting up style with CSS path: " + STYLE_FILE)
     css_provider = Gtk.CssProvider()
     css_provider.load_from_path(f"{STYLE_FILE}")
     display = window.get_display()
     Gtk.StyleContext.add_provider_for_display(
         display, css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
     )
+    printLog("CSS provider loaded")
 
+    printLog(
+        f"bar size to '{hyprBarConfig.window.width}x{hyprBarConfig.window.height}'"  # pyright: ignore # noqa
+    )
     window.set_default_size(hyprBarConfig.window.width, hyprBarConfig.window.height)  # pyright: ignore # noqa
 
     LayerShell.init_for_window(window)
@@ -109,10 +117,14 @@ def runHyprBar(config: HyprbarConfig) -> None:
     """
     HyprBar is a GTK4 Layer Shell bar for Hyprland.
     """
+    printLog("Instantiate the config Class ")
     global hyprBarConfig
     hyprBarConfig = config
 
     # Create the application
+    printLog("Create a new Application instance with 'com.antrax.HyprBar' as an id")
     app = Gtk.Application(application_id="com.antrax.HyprBar")
+    printLog("Connect to the activate signal of the application")
     app.connect("activate", on_activate)
+    printLog("Start the GTK main loop with 'app.run()'")
     app.run(None)
