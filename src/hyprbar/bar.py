@@ -8,13 +8,15 @@ gi.require_version("Gtk4LayerShell", "1.0")
 
 from gi.repository import Gtk  # pyright: ignore #noqa
 from gi.repository import Gtk4LayerShell as LayerShell  # pyright: ignore #noqa
-from gi.repository import GLib
+from gi.repository import GLib  # pyright: ignore # noqa
 
 from hyprbar.config import HyprbarConfig  # pyright: ignore # noqa
 from hyprbar.constants import STYLE_FILE, ANCHOR  # pyright: ignore # noqa
 
 
 hyprBarConfig = None
+components = []
+index = 0
 
 
 def on_activate(app):
@@ -84,8 +86,7 @@ def on_activate(app):
 # TODO: Criar um componente do tipo workspace
 # Definir uma prop refresh que cria uma thread e atualiza o widget
 # definir um componente de clock que atualiza a cada disparo da thead
-#  GLib.timeout_add_seconds(component.refresh, update_label)
-#
+# URL: https://docs.gtk.org/Pango/pango_markup.html
 def create_widget(component):
     if component.type == "label":
         return Gtk.Label(label=component.text)
@@ -99,13 +100,19 @@ def create_widget(component):
         return pb
 
     # Adicione outros tipos conforme necessário
+
     return None
 
 
+# TODO: função necessária
+#  GLib.timeout_add_seconds(component.refresh, update_label)
 def populate_box(box, components):
     for comp in components:
         widget = create_widget(comp)
         widget.set_name(comp.css_id)  # pyright: ignore # noqa
+        # HACK: Se há refresh precisa criar uma thread aqui
+        if comp.refresh > 0:
+            pass
         if widget:
             box.append(widget)  # Para GTK4, use append
 
