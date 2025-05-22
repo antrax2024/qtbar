@@ -48,6 +48,8 @@ def populateBox(box, components):
 
 def createWorkspacesComponent(box, workspace_text: str):
     workspaces = workspace_text.split(",")
-    for workspace in workspaces:
-        print(f"workspace ==> {workspace}")
-        box.append(Gtk.Label(label=f"{workspace}"))
+    for index, workspace in enumerate(workspaces):
+        label = Gtk.Label(label=f"{workspace}")
+        label.set_name(f"workspace-{index}")
+        print(index)
+        box.append(label)

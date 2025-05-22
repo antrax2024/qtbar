@@ -11,9 +11,27 @@
     margin: 0px;
 }
 
-#workspaces {
+#workspace-0 {
+    color: #334d2d;
+    margin-left: 10px;
+}
+
+#workspace-1 {
+    color: #f26337;
+}
+
+#workspace-2 {
+    color: #334d2d;
+}
+
+#workspace-3 {
+    color: #924b1d;
+}
+
+#workspace-4 {
     color: #fff;
 }
+
 
 #labelLeft {
     /* background: #f26337; */
