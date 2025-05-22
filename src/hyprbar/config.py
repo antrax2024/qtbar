@@ -12,27 +12,29 @@ class ComponentConfig(BaseConfig):
     type: str
 
 
+class KernelConfig(ComponentConfig):
+    type: Literal["kernel"]  # pyright: ignore # noqa
+    icon: Optional[str] = None  # icon  nerd font or emoji
+    command: Optional[str] = "uname -r"  # command to run
+    css_id: Optional[str] = None  # css id for the component
+    refresh: int = 60  # refresh time in seconds
+
+
 class WorkspacesConfig(ComponentConfig):
     type: Literal["workspaces"]  # pyright: ignore # noqa
     ids: List[str]  # list with workspaces identifiers
     css_id: Optional[str] = None  # css id for the component
 
 
-class LabelConfig(ComponentConfig):
-    type: Literal["label"]  # pyright: ignore # noqa
-    text: Optional[str] = None
-    css_id: Optional[str] = None
-
-
 class ClockConfig(ComponentConfig):
     type: Literal["clock"]  # pyright: ignore # noqa
-    icon: Optional[str] = None
+    icon: Optional[str] = None  # nerd font or emoji
     format: Optional[str] = "%H:%M:%S"
     css_id: Optional[str] = None
     refresh: Optional[int] = 1
 
 
-ComponentUnion = Union[WorkspacesConfig, LabelConfig, ClockConfig]
+ComponentUnion = Union[KernelConfig, WorkspacesConfig, ClockConfig]
 
 
 class ContainerConfig(BaseConfig):

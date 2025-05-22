@@ -2,7 +2,7 @@ from typing import List
 from datetime import datetime
 from gi.repository import Gtk  # pyright: ignore #noqa
 from gi.repository import GLib  # pyright: ignore # noqa
-from hyprbar.util import printLog
+from hyprbar.util import printLog, executeCommand
 from hyprpy import Hyprland
 
 from hyprbar.config import ComponentConfig
@@ -24,9 +24,28 @@ def populateBox(box: Gtk.Box, components: List[ComponentConfig]) -> None:
                 box=box,
                 comp=comp,
             )
-        elif comp.type == "label":
-            printLog(f"Creating label component => {comp.text}")  # pyright: ignore # noqa
-            print(f"Label: {comp.text}")  # pyright: ignore # noqa
+
+
+def updateKernel(label: Gtk.Label, command: str) -> bool:
+    code, out, error = executeCommand(command=command)
+    label.set_text(out)
+    return True
+
+
+def createKernelComponent(box: Gtk.Box, component: ComponentConfig) -> None:
+    kernelIcon = Gtk.Label(label=f"{component.icon}")  # pyright: ignore # noqa
+    kernelIcon.set_name(f"{component.css_id}-icon")  # pyright: ignore # noqa
+    kernelLabel = Gtk.Label(label=f"{executeCommand(component.command)}")  # pyright: ignore # noqa
+    kernelLabel.set_name(f"{component.css_id}-label")  # pyright: ignore # noqa
+
+    box.append(kernelIcon)
+    box.append(kernelLabel)
+
+    # Update every refresh time
+    GLib.timeout_add(
+        component.refresh,  # pyright: ignore # noqa
+        lambda: updateKernel(label=kernelLabel, command=component.command),  # pyright: ignore # noqa
+    )
 
 
 def updateWorkspaces() -> bool:
@@ -43,7 +62,7 @@ def updateWorkspaces() -> bool:
     return True
 
 
-def createWorkspacesComponent(box, component: ComponentConfig):
+def createWorkspacesComponent(box, component: ComponentConfig) -> None:
     global workspaces
     global currentWorkspaceID
     workspaces.clear()  # Limpa workspaces anterior
