@@ -5,7 +5,8 @@
 #
 from confz import BaseConfig, FileSource
 from hyprbar.constants import CONFIG_FILE
-from typing import List, Optional
+from typing import Any, List, Optional, Union
+from pydantic import root_validator
 
 
 class ComponentConfig(BaseConfig):

@@ -1,10 +1,11 @@
-from typing import List
+from typing import List, Any
 import threading
 import time
 from gi.repository import Gtk  # pyright: ignore #noqa
 from gi.repository import GLib  # pyright: ignore # noqa
-from hyprbar.config import ComponentConfig
 from hyprpy import Hyprland
+
+from hyprbar.config import ComponentConfig
 
 instance = Hyprland()
 workspaces = []
@@ -28,7 +29,7 @@ def createWidget(component):
     return None
 
 
-def populateBox(box: Gtk.Box, components: List[ComponentConfig]):
+def populateBox(box: Gtk.Box, components: List[ComponentConfig]) -> None:
     for comp in components:
         if comp.type == "workspaces":
             createWorkspacesComponent(box=box, workspace_text=comp.text)  # pyright: ignore # noqa
