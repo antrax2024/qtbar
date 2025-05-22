@@ -1,4 +1,4 @@
-from typing import List, Any
+from typing import List
 import threading
 import time
 from gi.repository import Gtk  # pyright: ignore #noqa
@@ -53,8 +53,20 @@ def populateBox(box: Gtk.Box, components: List[ComponentConfig]):
         #
 
 
-def workspaceAddActiveClass() -> None:
+def workspaceSetActiveClass() -> None:
     GLib.idle_add(workspaces[currentWorkspaceID - 1].add_css_class, "active")
+
+
+def workspaceResetActiveClass() -> None:
+    GLib.idle_add(workspaces[currentWorkspaceID - 1].remove_css_class, "active")
+
+
+def workspaceSetHoverClass() -> None:
+    GLib.idle_add(workspaces[currentWorkspaceID - 1].add_css_class, "hover")
+
+
+def workspaceResetHoverClass() -> None:
+    GLib.idle_add(workspaces[currentWorkspaceID - 1].remove_css_class, "hover")
 
 
 def workspacesThread() -> None:
@@ -64,12 +76,10 @@ def workspacesThread() -> None:
         if wk.id <= len(workspaces):
             if wk.id != currentWorkspaceID:
                 # Remove active class
-                GLib.idle_add(
-                    workspaces[currentWorkspaceID - 1].remove_css_class, "active"
-                )
+                workspaceResetActiveClass()
                 currentWorkspaceID = wk.id
                 # add css class
-                workspaceAddActiveClass()
+                workspaceSetActiveClass()
 
         time.sleep(0.1)
 
@@ -83,12 +93,13 @@ def createWorkspacesComponent(box, workspace_text: str):
     for wk in wks:
         label = Gtk.Label(label=f"{wk}")
         label.set_name(f"workspace-{len(workspaces)}")
+        label.add_css_class("hover")
         workspaces.append(label)
         box.append(label)
 
     activeWorkspace = instance.get_active_workspace()
     currentWorkspaceID = activeWorkspace.id
-    workspaceAddActiveClass()
+    workspaceSetActiveClass()
     # Start worspaces thread
     thread = threading.Thread(target=workspacesThread, daemon=True)
     thread.start()

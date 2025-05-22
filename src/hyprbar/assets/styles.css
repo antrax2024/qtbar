@@ -14,6 +14,7 @@
 #workspace-0 {
     color: #BBFBFF;
     margin-left: 10px;
+    min-width: 30px;
 }
 
 #workspace-0.active {
@@ -23,11 +24,13 @@
     border-bottom-color: #7CFC00;
 }
 
+
+
 #workspace-1 {
     color: #BBFBFF;
     margin-left: 10px;
+    min-width: 30px;
 }
-
 
 #workspace-1.active {
     color: #7CFC00;
@@ -36,9 +39,18 @@
     border-bottom-color: #7CFC00;
 }
 
+#workspace-1:hover {
+    background: @theme_selected_bg_color;
+    color: @theme_selected_fg_color;
+    border-radius: 6px;
+    transition: background 0.2s, color 0.2s;
+}
+
+
 #workspace-2 {
     color: #BBFBFF;
     margin-left: 10px;
+    min-width: 30px;
 }
 
 #workspace-2.active {
@@ -47,10 +59,19 @@
     border-bottom-style: solid;
     border-bottom-color: #7CFC00;
 }
+#workspace-2:hover {
+    background: @theme_selected_bg_color;
+    color: @theme_selected_fg_color;
+    border-radius: 6px;
+    transition: background 0.2s, color 0.2s;
+}
+
+
 
 #workspace-3 {
     color: #BBFBFF;
     margin-left: 10px;
+    min-width: 30px;
 }
 
 #workspace-3.active {
@@ -59,11 +80,18 @@
     border-bottom-style: solid;
     border-bottom-color: #7CFC00;
 }
+#workspace-3:hover {
+    background: @theme_selected_bg_color;
+    color: @theme_selected_fg_color;
+    border-radius: 6px;
+    transition: background 0.2s, color 0.2s;
+}
 
 
 #workspace-4 {
     color: #BBFBFF;
     margin-left: 10px;
+    min-width: 30px;
 }
 
 #workspace-4.active {
@@ -72,5 +100,11 @@
     border-bottom-style: solid;
     border-bottom-color: #7CFC00;
 
+}
+#workspace-4:hover {
+    background: @theme_selected_bg_color;
+    color: @theme_selected_fg_color;
+    border-radius: 6px;
+    transition: background 0.2s, color 0.2s;
 }
 
