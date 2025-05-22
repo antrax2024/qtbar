@@ -11,12 +11,6 @@ workspaces = []
 currentWorkspaceID = 1
 
 
-# TODO: Criar um componente do tipo workspace
-# Definir uma prop refresh que cria uma thread e atualiza o widget
-# definir um componente de clock que atualiza a cada disparo da thead
-# label.set_markup('<span foreground="purple">Temperatura:</span> <span foreground="green">20°C</span>')
-
-
 def createWidget(component):
     if component.type == "label":
         return Gtk.Label(label=component.text)
@@ -54,12 +48,6 @@ def populateBox(box: Gtk.Box, components: List[ComponentConfig]):
             # if Markup: Ok, set_markup
             if comp.markup:
                 widget.set_markup(comp.markup)  # pyright: ignore # noqa
-
-
-# HACK: Se há refresh precisa criar uma thread aqui
-# if comp.refresh > 0:
-#     pass
-#
 
 
 def workspaceSetActiveClass() -> None:
