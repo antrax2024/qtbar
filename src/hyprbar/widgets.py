@@ -10,6 +10,8 @@ from gi.repository import Gtk  # pyright: ignore #noqa
 def createWidget(component):
     if component.type == "workspaces":
         # component.text
+        # transform string 1,2,3,4,5 on array
+        # workspaces =
         pass
 
     elif component.type == "label":
