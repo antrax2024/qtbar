@@ -122,7 +122,11 @@ def clockThread(clockLabel: Gtk.Label, format: str, refresh: int) -> None:
 
 
 def createClockComponent(
-    box: Gtk.Box, icon: str, format: str, css_id: str, refresh: int = 1
+    box: Gtk.Box,
+    icon: str,
+    format: str,
+    css_id: str,
+    refresh: int = 1,
 ):
     iconLabel = Gtk.Label(label=f"{icon}")
     iconLabel.set_name(f"{css_id}-icon")
