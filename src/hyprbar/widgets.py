@@ -39,7 +39,12 @@ def populateBox(box: Gtk.Box, components: List[ComponentConfig]):
         if comp.type == "workspaces":
             createWorkspacesComponent(box=box, workspace_text=comp.text)  # pyright: ignore # noqa
         elif comp.type == "clock":
-            createClockComponent(box=box, format=comp.format, refresh=comp.refresh)  # pyright: ignore # noqa
+            createClockComponent(
+                box=box,
+                icon=comp.icon,  # pyright: ignore # noqa
+                format=comp.format,  # pyright: ignore # noqa
+                refresh=comp.refresh,  # pyright: ignore # noqa
+            )
         else:
             widget = createWidget(comp)
             widget.set_name(comp.css_id)  # pyright: ignore # noqa
@@ -108,19 +113,24 @@ def createWorkspacesComponent(box, workspace_text: str):
     thread.start()
 
 
-def clockThread(label: Gtk.Label, format: str, refresh: int) -> None:
+def clockThread(clockLabel: Gtk.Label, format: str, refresh: int) -> None:
     while True:
         current_time = time.strftime(format)
-        GLib.idle_add(label.set_text, current_time)
+        GLib.idle_add(clockLabel.set_text, current_time)
         time.sleep(refresh)
 
 
-def createClockComponent(box: Gtk.Box, format: str, refresh: int = 1):
-    label = Gtk.Label(label="00:00:00")
-    label.set_name("clock")
+def createClockComponent(box: Gtk.Box, icon: str, format: str, refresh: int = 1):
+    iconLabel = Gtk.Label(label=f"{icon}")
+    iconLabel.set_name("clock-icon")
+    clockLabel = Gtk.Label(label="00:00:00")
+    clockLabel.set_name("clock-label")
+
     thread = threading.Thread(
-        target=clockThread, args=(label, format, refresh), daemon=True
+        target=clockThread,
+        args=(clockLabel, format, refresh),
+        daemon=True,
     )
     thread.start()
-    box.append(label)
-    #
+    box.append(iconLabel)
+    box.append(clockLabel)

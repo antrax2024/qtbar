@@ -11,6 +11,7 @@ from typing import List, Optional
 class ComponentConfig(BaseConfig):
     type: str  # label, button, progressbar, etc.
     css_id: Optional[str] = None
+    icon: Optional[str] = None
     text: Optional[str] = None
     markup: Optional[str] = None
     format: Optional[str] = None  # to clock format
