@@ -49,19 +49,13 @@
     border-bottom-color: #7CFC00;
 }
 
-#clock1-icon {
-  color: #9B7EBD;  
+#clock-icon {
+  color: #7CFC00;  
 }
-#clock1-label {
+#clock-label {
   color: #FFE1E0;
 }
 
-#clock2-icon {
-  color: #FF9B45;
-}
-#clock2-label {
-  color: #FFE1E0;
-}
 
 #workspace-3 {
     color: #BBFBFF;

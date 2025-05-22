@@ -9,12 +9,7 @@ window:
 
   left_container:
     hor_spacing: 6
-    components:
-      - type: clock
-        icon: "󰦖"
-        format: "%H:%M:%S"
-        css_id: "label"
-        refresh: 1
+    components: []
 
   center_container:
     hor_spacing: 6
@@ -22,4 +17,9 @@ window:
 
   right_container:
     hor_spacing: 6
-    components: []
+    components:
+      - type: clock
+        icon: "󰦖"
+        format: "%H:%M:%S"
+        css_id: "clock"
+        refresh: 1
