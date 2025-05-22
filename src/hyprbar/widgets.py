@@ -141,3 +141,7 @@ def createClockComponent(
     thread.start()
     box.append(iconLabel)
     box.append(clockLabel)
+
+
+def createCPUComponent() -> None:
+    pass
