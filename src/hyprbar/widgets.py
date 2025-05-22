@@ -58,8 +58,11 @@ def workspacesThread() -> None:
     while True:
         wk = instance.get_active_workspace()
         if wk.id != currentWorkspaceID:
-            print("ahhhh mudou de workspace....")
+            # Remove active class
+            GLib.idle_add(workspaces[currentWorkspaceID - 1].remove_css_class, "active")
             currentWorkspaceID = wk.id
+            # add css class
+            GLib.idle_add(workspaces[currentWorkspaceID - 1].add_css_class, "active")
 
         time.sleep(0.1)
 

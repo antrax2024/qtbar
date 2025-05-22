@@ -16,9 +16,20 @@
     margin-left: 10px;
 }
 
+#workspace-0.active {
+    color: #DDA853;
+    background: #0E2148;
+}
+
 #workspace-1 {
     color: #BBFBFF;
     margin-left: 10px;
+}
+
+
+#workspace-1.active {
+    color: #DDA853;
+    background: #0E2148;
 }
 
 #workspace-2 {
@@ -26,12 +37,29 @@
     margin-left: 10px;
 }
 
+#workspace-2.active {
+    color: #DDA853;
+    background: #0E2148;
+}
+
 #workspace-3 {
     color: #BBFBFF;
     margin-left: 10px;
 }
 
+#workspace-3.active {
+    color: #DDA853;
+    background: #0E2148;
+}
+
+
 #workspace-4 {
     color: #BBFBFF;
     margin-left: 10px;
 }
+
+#workspace-4.active {
+    color: #DDA853;
+    background: #0E2148;
+}
+
