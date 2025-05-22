@@ -1,6 +1,7 @@
 from typing import List
 import threading
 import time
+from datetime import datetime
 from gi.repository import Gtk  # pyright: ignore #noqa
 from gi.repository import GLib  # pyright: ignore # noqa
 from hyprbar.util import printLog
@@ -82,26 +83,25 @@ def createWorkspacesComponent(box, workspace_text: str):
     thread.start()
 
 
-def clockThread(clockLabel: Gtk.Label, format: str, refresh: int) -> None:
-    while True:
-        current_time = time.strftime(format)
-        GLib.idle_add(clockLabel.set_text, current_time)
-        time.sleep(refresh)
+def clockUpdate(clockLabel: Gtk.Label, format: str) -> bool:
+    current_time = datetime.now().strftime(format)
+    GLib.idle_add(clockLabel.set_text, current_time)
+    return True  # Continua chamando periodicamente
 
 
 def createClockComponent(box: Gtk.Box, comp: ComponentConfig):
     iconLabel = Gtk.Label(label=f"{comp.icon}")  # pyright: ignore # noqa
     iconLabel.set_name(f"{comp.css_id}-icon")  # pyright: ignore # noqa
-    clockLabel = Gtk.Label()
+    clockLabel = Gtk.Label(label=datetime.now().strftime(comp.format))  # pyright: ignore # noqa
     clockLabel.set_name(f"{comp.css_id}-label")  # pyright: ignore # noqa
 
     printLog(f"Starting thread for clock component...")  # pyright: ignore # noqa
-    thread = threading.Thread(
-        target=clockThread,
-        args=(clockLabel, comp.format, comp.refresh),  # pyright: ignore # noqa
-        daemon=True,
-    )
-    thread.start()
+    # Update every second (1000ms)
+    GLib.timeout_add(
+        1000,
+        lambda: clockUpdate(clockLabel, comp.format),  # pyright: ignore # noqa
+    )  # Atualiza a cada 1 segundo
+
     printLog(f"Append icon and label to box...")  # pyright: ignore # noqa
     box.append(iconLabel)
     box.append(clockLabel)

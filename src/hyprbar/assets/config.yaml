@@ -20,6 +20,6 @@ window:
     components:
       - type: clock
         icon: "󰦖"
-        format: "%H:%M:%S"
+        format: "%Y-%m-%d %H:%M:%S"
         css_id: "clock"
         refresh: 1
