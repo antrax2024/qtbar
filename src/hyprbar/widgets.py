@@ -7,12 +7,19 @@ from gi.repository import Gtk  # pyright: ignore #noqa
 # label.set_markup('<span foreground="purple">Temperatura:</span> <span foreground="green">20°C</span>')
 
 
+workspaces = []
+
+
 def createWidget(component):
     if component.type == "workspaces":
         # component.text
         # transform string 1,2,3,4,5 on array
         # workspaces =
-        pass
+        workspaces = component.text.split(",")
+        for workspace in workspaces:
+            print(f"workspace ==> {workspace}")
+
+        return Gtk.Label(label=f"Workspaces: {', '.join(workspaces)}")
 
     elif component.type == "label":
         return Gtk.Label(label=component.text)
