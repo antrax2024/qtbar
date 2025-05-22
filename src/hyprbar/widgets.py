@@ -1,4 +1,4 @@
-from typing import List, Any
+from typing import List
 import threading
 import time
 from gi.repository import Gtk  # pyright: ignore #noqa
@@ -10,23 +10,6 @@ from hyprbar.config import ComponentConfig
 instance = Hyprland()
 workspaces = []
 currentWorkspaceID = 1
-
-
-def createWidget(component):
-    if component.type == "label":
-        return Gtk.Label(label=component.text)
-    elif component.type == "button":
-        btn = Gtk.Button(label=component.text)
-        # Aqui você pode conectar o sinal "clicked" a uma função baseada no on_click
-        return btn
-    elif component.type == "progressbar":
-        pb = Gtk.ProgressBar()
-        # Defina o valor conforme necessário
-        return pb
-
-    # Adicione outros tipos conforme necessário
-
-    return None
 
 
 def populateBox(box: Gtk.Box, components: List[ComponentConfig]) -> None:
@@ -41,14 +24,8 @@ def populateBox(box: Gtk.Box, components: List[ComponentConfig]) -> None:
                 refresh=comp.refresh,  # pyright: ignore # noqa
                 css_id=comp.css_id,  # pyright: ignore # noqa
             )
-        else:
-            widget = createWidget(comp)
-            widget.set_name(comp.css_id)  # pyright: ignore # noqa
-            if widget:
-                box.append(widget)  # Para GTK4, use append
-            # if Markup: Ok, set_markup
-            if comp.markup:
-                widget.set_markup(comp.markup)  # pyright: ignore # noqa
+        elif comp.type == "label":
+            print(f"Label: {comp.text}")  # pyright: ignore # noqa
 
 
 def workspaceSetActiveClass() -> None:

@@ -5,25 +5,33 @@
 #
 from confz import BaseConfig, FileSource
 from hyprbar.constants import CONFIG_FILE
-from typing import Any, List, Optional, Union
-from pydantic import root_validator
+from typing import Literal, Union, Optional, List
 
 
 class ComponentConfig(BaseConfig):
-    type: str  # label, button, progressbar, etc.
-    css_id: Optional[str] = None
-    icon: Optional[str] = None
+    type: str
+
+
+class LabelConfig(ComponentConfig):
+    type: Literal["label"]  # pyright: ignore # noqa
     text: Optional[str] = None
-    markup: Optional[str] = None
-    format: Optional[str] = None  # to clock format
-    value: Optional[str] = None
-    on_click: Optional[str] = None
+    css_id: Optional[str] = None
+
+
+class ClockConfig(ComponentConfig):
+    type: Literal["clock"]  # pyright: ignore # noqa
+    icon: Optional[str] = None
+    format: Optional[str] = "%H:%M:%S"
+    css_id: Optional[str] = None
     refresh: Optional[int] = 1
+
+
+ComponentUnion = Union[LabelConfig, ClockConfig]
 
 
 class ContainerConfig(BaseConfig):
     hor_spacing: int = 4  # horizontal spacing
-    components: List[ComponentConfig] = []
+    components: List[ComponentUnion] = []
 
 
 class WindowConfig(BaseConfig):

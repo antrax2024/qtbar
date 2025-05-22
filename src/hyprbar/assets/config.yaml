@@ -10,27 +10,16 @@ window:
   left_container:
     hor_spacing: 6
     components:
-      - type: workspaces
-        text: "1,2,3,4,5"
-        css_id: "workspaces"
+      - type: clock
+        icon: "󰦖"
+        format: "%H:%M:%S"
+        css_id: "label"
+        refresh: 1
 
   center_container:
     hor_spacing: 6
-    components:
-      - type: clock
-        icon: "󰦖"
-        format: "%Y-%m-%d %H:%M:%S" # strftime
-        css_id: "clock1"
-        refresh: 1
+    components: []
 
   right_container:
     hor_spacing: 6
-    components:
-      - type: label
-        text: "label 1"
-        css_id: "label1"
-      - type: clock
-        icon: "󰥔"
-        format: "%H:%M:%S" # strftime
-        css_id: "clock2"
-        refresh: 1 # 1 second
+    components: []
