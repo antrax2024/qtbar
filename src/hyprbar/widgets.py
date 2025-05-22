@@ -1,5 +1,6 @@
 from typing import List
 from gi.repository import Gtk  # pyright: ignore #noqa
+from hyprbar.config import ComponentConfig
 
 
 # TODO: Criar um componente do tipo workspace
@@ -27,10 +28,10 @@ def createWidget(component):
 
 # TODO: função necessária
 #  GLib.timeout_add_seconds(component.refresh, update_label)
-def populateBox(box, components):
+def populateBox(box: Gtk.Box, components: List[ComponentConfig]):
     for comp in components:
         if comp.type == "workspaces":
-            createWorkspacesComponent(box=box, workspace_text=comp.text)
+            createWorkspacesComponent(box=box, workspace_text=comp.text)  # pyright: ignore # noqa
         else:
             widget = createWidget(comp)
             widget.set_name(comp.css_id)  # pyright: ignore # noqa

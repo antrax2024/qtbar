@@ -5,13 +5,13 @@ window:
   margin_top: 0
   margin_bottom: 0
   width: 2560 # The width of the window in pixels
-  height: 32 # The height of the window in pixels
+  height: 28 # The height of the window in pixels
 
   left_container:
     hor_spacing: 6
     components:
       - type: workspaces
-        text: "1,2,3,4,5"
+        text: ",󰢹,,󰾢,󱄲"
         css_id: "workspaces"
 
   center_container:

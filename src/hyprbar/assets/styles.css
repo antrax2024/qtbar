@@ -1,7 +1,7 @@
 
 * {
     font-family: "Hack Nerd Font Propo", sans-serif;
-    font-size: 16px;
+    font-size: 18px;
 }
 
 
@@ -12,49 +12,26 @@
 }
 
 #workspace-0 {
-    color: #334d2d;
+    color: #BBFBFF;
     margin-left: 10px;
 }
 
 #workspace-1 {
-    color: #f26337;
+    color: #BBFBFF;
+    margin-left: 10px;
 }
 
 #workspace-2 {
-    color: #334d2d;
+    color: #BBFBFF;
+    margin-left: 10px;
 }
 
 #workspace-3 {
-    color: #924b1d;
+    color: #BBFBFF;
+    margin-left: 10px;
 }
 
 #workspace-4 {
-    color: #fff;
+    color: #BBFBFF;
+    margin-left: 10px;
 }
-
-
-#labelLeft {
-    /* background: #f26337; */
-    /* color: #fff; */
-}
-
-#labelCenter {
-    /* background: #924b1d; */
-    /* color: #fff; */
-}
-
-#label1 {
-    /* background: #334d2d; */
-    /* color: #fff; */
-}
-
-
-#label2{
-    /* background: #334d2d; */
-    /* color: #fff; */
-}
-
-
-
-
-

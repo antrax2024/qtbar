@@ -21,7 +21,7 @@ components = []
 index = 0
 
 
-def on_activate(app):
+def onActivate(app):
     printLog("on activate triggered")
     window = Gtk.Window(application=app)
     printLog("window created, setting properties for hyprbar window instance: ")
@@ -104,30 +104,6 @@ def on_activate(app):
     window.present()
 
 
-# TODO: função necessária
-#  GLib.timeout_add_seconds(component.refresh, update_label)
-# def populateBox(box, components):
-#     for comp in components:
-#         if comp.type == "workspaces":
-#             workspaces = comp.text.split(",")
-#             for workspace in workspaces:
-#                 print(f"workspace ==> {workspace}")
-#
-#         else:
-#             widget = createWidget(comp)
-#             widget.set_name(comp.css_id)  # pyright: ignore # noqa
-#
-#         # if Markup: Ok, set_markup
-#         if comp.markup:
-#             widget.set_markup(comp.markup)  # pyright: ignore # noqa
-#
-#         # HACK: Se há refresh precisa criar uma thread aqui
-#         # if comp.refresh > 0:
-#         #     pass
-#         if widget:
-#             box.append(widget)  # Para GTK4, use append
-
-
 def runHyprBar(config: HyprbarConfig) -> None:
     """
     HyprBar is a GTK4 Layer Shell bar for Hyprland.
@@ -140,6 +116,6 @@ def runHyprBar(config: HyprbarConfig) -> None:
     printLog("Create a new Application instance with 'com.antrax.HyprBar' as an id")
     app = Gtk.Application(application_id="com.antrax.HyprBar")
     printLog("Connect to the activate signal of the application")
-    app.connect("activate", on_activate)
+    app.connect("activate", onActivate)
     printLog("Start the GTK main loop with 'app.run()'")
     app.run(None)
