@@ -1,6 +1,4 @@
 from typing import List
-import threading
-import time
 from datetime import datetime
 from gi.repository import Gtk  # pyright: ignore #noqa
 from gi.repository import GLib  # pyright: ignore # noqa
@@ -18,7 +16,7 @@ def populateBox(box: Gtk.Box, components: List[ComponentConfig]) -> None:
     printLog(f"Populating box => {box} with components")
     for comp in components:
         if comp.type == "workspaces":
-            printLog(f"Creating workspaces component => {comp.text}")  # pyright: ignore # noqa
+            printLog(f"Creating workspaces component...")  # pyright: ignore # noqa
             createWorkspacesComponent(box=box, component=comp)  # pyright: ignore # noqa
         elif comp.type == "clock":
             printLog(f"Creating clock component => {comp.icon}")  # pyright: ignore # noqa

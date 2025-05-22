@@ -4,50 +4,32 @@
     font-size: 18px;
 }
 
-
 #hyprbar {
     background: rgba(0, 0, 0, 0.5);
     padding: 0px;
     margin: 0px;
 }
 
-#workspace-0 {
+#workspace-1,
+#workspace-2,
+#workspace-3,
+#workspace-4,
+#workspace-5 {
     color: #BBFBFF;
     min-width: 35px;
-    /* margin-left: 10px; */
 }
 
-#workspace-0.active {
+#workspace-1.active,
+#workspace-2.active,
+#workspace-3.active,
+#workspace-4.active,
+#workspace-5.active {
     color: #7CFC00;
     border-bottom-width: 2px;
     border-bottom-style: solid;
     border-bottom-color: #7CFC00;
 }
 
-#workspace-1 {
-    color: #BBFBFF;
-    min-width: 35px;
-}
-
-#workspace-1.active {
-    color: #7CFC00;
-    border-bottom-width: 2px;
-    border-bottom-style: solid;
-    border-bottom-color: #7CFC00;
-}
-
-
-#workspace-2 {
-    color: #BBFBFF;
-    min-width: 35px;
-}
-
-#workspace-2.active {
-    color: #7CFC00;
-    border-bottom-width: 2px;
-    border-bottom-style: solid;
-    border-bottom-color: #7CFC00;
-}
 
 #clock-icon {
   color: #7CFC00;  
@@ -56,30 +38,5 @@
   color: #FFE1E0;
 }
 
-
-#workspace-3 {
-    color: #BBFBFF;
-    min-width: 35px;
-}
-
-#workspace-3.active {
-    color: #7CFC00;
-    border-bottom-width: 2px;
-    border-bottom-style: solid;
-    border-bottom-color: #7CFC00;
-}
-
-
-#workspace-4 {
-    color: #BBFBFF;
-    min-width: 35px;
-}
-
-#workspace-4.active {
-    color: #7CFC00;
-    border-bottom-width: 2px;
-    border-bottom-style: solid;
-    border-bottom-color: #7CFC00;
-}
 
 

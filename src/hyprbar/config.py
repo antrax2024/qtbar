@@ -12,7 +12,7 @@ class ComponentConfig(BaseConfig):
     type: str
 
 
-class WorkspaceConfig(ComponentConfig):
+class WorkspacesConfig(ComponentConfig):
     type: Literal["workspaces"]  # pyright: ignore # noqa
     ids: List[str]  # list with workspaces identifiers
     css_id: Optional[str] = None  # css id for the component
@@ -32,7 +32,7 @@ class ClockConfig(ComponentConfig):
     refresh: Optional[int] = 1
 
 
-ComponentUnion = Union[LabelConfig, ClockConfig]
+ComponentUnion = Union[WorkspacesConfig, LabelConfig, ClockConfig]
 
 
 class ContainerConfig(BaseConfig):
