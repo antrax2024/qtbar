@@ -16,7 +16,7 @@ def populateBox(box: Gtk.Box, components: List[ComponentConfig]) -> None:
     printLog(f"Populating box => {box} with components")
     for comp in components:
         if comp.type == "workspaces":
-            printLog(f"Creating workspaces component...")  # pyright: ignore # noqa
+            printLog("Creating workspaces component...")
             createWorkspacesComponent(box=box, component=comp)  # pyright: ignore # noqa
         elif comp.type == "clock":
             printLog(f"Creating clock component => {comp.icon}")  # pyright: ignore # noqa
@@ -24,6 +24,9 @@ def populateBox(box: Gtk.Box, components: List[ComponentConfig]) -> None:
                 box=box,
                 comp=comp,
             )
+        elif comp.type == "kernel":
+            printLog("Creating kernel component...")
+            createKernelComponent(box=box, component=comp)
 
 
 def updateKernel(label: Gtk.Label, command: str) -> bool:
