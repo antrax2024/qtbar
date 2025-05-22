@@ -24,8 +24,6 @@
     border-bottom-color: #7CFC00;
 }
 
-
-
 #workspace-1 {
     color: #BBFBFF;
     margin-left: 10px;
@@ -37,13 +35,6 @@
     border-bottom-width: 2px;
     border-bottom-style: solid;
     border-bottom-color: #7CFC00;
-}
-
-#workspace-1:hover {
-    background: @theme_selected_bg_color;
-    color: @theme_selected_fg_color;
-    border-radius: 6px;
-    transition: background 0.2s, color 0.2s;
 }
 
 
@@ -58,12 +49,6 @@
     border-bottom-width: 2px;
     border-bottom-style: solid;
     border-bottom-color: #7CFC00;
-}
-#workspace-2:hover {
-    background: @theme_selected_bg_color;
-    color: @theme_selected_fg_color;
-    border-radius: 6px;
-    transition: background 0.2s, color 0.2s;
 }
 
 
@@ -80,12 +65,6 @@
     border-bottom-style: solid;
     border-bottom-color: #7CFC00;
 }
-#workspace-3:hover {
-    background: @theme_selected_bg_color;
-    color: @theme_selected_fg_color;
-    border-radius: 6px;
-    transition: background 0.2s, color 0.2s;
-}
 
 
 #workspace-4 {
@@ -100,11 +79,5 @@
     border-bottom-style: solid;
     border-bottom-color: #7CFC00;
 
-}
-#workspace-4:hover {
-    background: @theme_selected_bg_color;
-    color: @theme_selected_fg_color;
-    border-radius: 6px;
-    transition: background 0.2s, color 0.2s;
 }
 
