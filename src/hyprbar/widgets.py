@@ -3,6 +3,9 @@ from gi.repository import Gtk  # pyright: ignore #noqa
 from hyprbar.config import ComponentConfig
 
 
+workspaces = []
+
+
 # TODO: Criar um componente do tipo workspace
 # Definir uma prop refresh que cria uma thread e atualiza o widget
 # definir um componente de clock que atualiza a cada disparo da thead
@@ -48,9 +51,11 @@ def populateBox(box: Gtk.Box, components: List[ComponentConfig]):
 
 
 def createWorkspacesComponent(box, workspace_text: str):
-    workspaces = workspace_text.split(",")
-    for index, workspace in enumerate(workspaces):
-        label = Gtk.Label(label=f"{workspace}")
-        label.set_name(f"workspace-{index}")
-        print(index)
-        box.append(label)
+    global workspaces
+    wks = workspace_text.split(",")
+    for index, wk in enumerate(wks):
+        workspaces[index] = Gtk.Label(label=f"{wk}")
+        workspaces[index].set_name(f"workspace-{index}")
+        box.append(workspaces[index])
+
+        # gonha
