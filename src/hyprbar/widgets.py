@@ -76,13 +76,6 @@ def workspacesThread() -> None:
         time.sleep(0.1)
 
 
-def updateWorkspace(id: int):
-    global currentWorkspaceID
-    # Atualiza a interface na thread principal
-    GLib.idle_add(workspaces[id - 1].set_text, "gonha")
-    currentWorkspaceID = id
-
-
 def createWorkspacesComponent(box, workspace_text: str):
     global workspaces
     global currentWorkspaceID
@@ -98,7 +91,6 @@ def createWorkspacesComponent(box, workspace_text: str):
     activeWorkspace = instance.get_active_workspace()
     currentWorkspaceID = activeWorkspace.id
     workspaceAddActiveClass()
-    updateWorkspace(activeWorkspace.id)
     # Start worspaces thread
     thread = threading.Thread(target=workspacesThread, daemon=True)
     thread.start()
