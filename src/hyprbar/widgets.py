@@ -19,7 +19,7 @@ def populateBox(box: Gtk.Box, components: List[ComponentConfig]) -> None:
     for comp in components:
         if comp.type == "workspaces":
             printLog(f"Creating workspaces component => {comp.text}")  # pyright: ignore # noqa
-            createWorkspacesComponent(box=box, workspace_text=comp.text)  # pyright: ignore # noqa
+            createWorkspacesComponent(box=box, component=comp)  # pyright: ignore # noqa
         elif comp.type == "clock":
             printLog(f"Creating clock component => {comp.icon}")  # pyright: ignore # noqa
             createClockComponent(
@@ -31,56 +31,38 @@ def populateBox(box: Gtk.Box, components: List[ComponentConfig]) -> None:
             print(f"Label: {comp.text}")  # pyright: ignore # noqa
 
 
-def workspaceSetActiveClass() -> None:
-    GLib.idle_add(workspaces[currentWorkspaceID - 1].add_css_class, "active")
-
-
-def workspaceResetActiveClass() -> None:
-    GLib.idle_add(workspaces[currentWorkspaceID - 1].remove_css_class, "active")
-
-
-def workspaceSetHoverClass() -> None:
-    GLib.idle_add(workspaces[currentWorkspaceID - 1].add_css_class, "hover")
-
-
-def workspaceResetHoverClass() -> None:
-    GLib.idle_add(workspaces[currentWorkspaceID - 1].remove_css_class, "hover")
-
-
-def workspacesThread() -> None:
+def updateWorkspaces() -> bool:
     global currentWorkspaceID
-    while True:
-        wk = instance.get_active_workspace()
-        if wk.id <= len(workspaces):
-            if wk.id != currentWorkspaceID:
-                # Remove active class
-                workspaceResetActiveClass()
-                currentWorkspaceID = wk.id
-                # add css class
-                workspaceSetActiveClass()
+    wk = instance.get_active_workspace()
+    if wk.id <= len(workspaces):
+        if wk.id != currentWorkspaceID:
+            # Remove active class
+            GLib.idle_add(workspaces[currentWorkspaceID - 1].remove_css_class, "active")
+            currentWorkspaceID = wk.id
+            # add css class
+            GLib.idle_add(workspaces[currentWorkspaceID - 1].add_css_class, "active")
 
-        time.sleep(0.1)
+    return True
 
 
-def createWorkspacesComponent(box, workspace_text: str):
+def createWorkspacesComponent(box, component: ComponentConfig):
     global workspaces
     global currentWorkspaceID
-    wks = workspace_text.split(",")
-
     workspaces.clear()  # Limpa workspaces anterior
-    for wk in wks:
-        label = Gtk.Label(label=f"{wk}")
-        label.set_name(f"workspace-{len(workspaces)}")
+    for index, id in enumerate(component.ids):  # pyright: ignore # noqa
+        label = Gtk.Label(label=f"{id}")
+        # css id for the workspace
+        label.set_name(f"{component.css_id}-{index + 1}")  # pyright: ignore # noqa
         label.add_css_class("hover")
         workspaces.append(label)
         box.append(label)
 
     activeWorkspace = instance.get_active_workspace()
     currentWorkspaceID = activeWorkspace.id
-    workspaceSetActiveClass()
-    # Start worspaces thread
-    thread = threading.Thread(target=workspacesThread, daemon=True)
-    thread.start()
+    # Update every second (100ms)
+    GLib.timeout_add(100, updateWorkspaces)
+    # add active class
+    GLib.idle_add(workspaces[currentWorkspaceID - 1].add_css_class, "active")
 
 
 def clockUpdate(clockLabel: Gtk.Label, format: str) -> bool:

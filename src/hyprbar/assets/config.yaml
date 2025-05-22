@@ -9,7 +9,10 @@ window:
 
   left_container:
     hor_spacing: 6
-    components: []
+    components:
+      - type: workspaces
+        ids: ["1", "2", "3", "4", "5"]
+        css_id: "workspace"
 
   center_container:
     hor_spacing: 6

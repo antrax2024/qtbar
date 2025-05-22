@@ -12,6 +12,12 @@ class ComponentConfig(BaseConfig):
     type: str
 
 
+class WorkspaceConfig(ComponentConfig):
+    type: Literal["workspaces"]  # pyright: ignore # noqa
+    ids: List[str]  # list with workspaces identifiers
+    css_id: Optional[str] = None  # css id for the component
+
+
 class LabelConfig(ComponentConfig):
     type: Literal["label"]  # pyright: ignore # noqa
     text: Optional[str] = None
