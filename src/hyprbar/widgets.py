@@ -1,3 +1,4 @@
+from typing import List
 from gi.repository import Gtk  # pyright: ignore #noqa
 
 
@@ -5,9 +6,6 @@ from gi.repository import Gtk  # pyright: ignore #noqa
 # Definir uma prop refresh que cria uma thread e atualiza o widget
 # definir um componente de clock que atualiza a cada disparo da thead
 # label.set_markup('<span foreground="purple">Temperatura:</span> <span foreground="green">20°C</span>')
-
-
-workspaces = []
 
 
 def createWidget(component):
@@ -32,10 +30,7 @@ def createWidget(component):
 def populateBox(box, components):
     for comp in components:
         if comp.type == "workspaces":
-            workspaces = comp.text.split(",")
-            for workspace in workspaces:
-                print(f"workspace ==> {workspace}")
-
+            createWorkspacesComponent(box=box, workspace_text=comp.text)
         else:
             widget = createWidget(comp)
             widget.set_name(comp.css_id)  # pyright: ignore # noqa
@@ -48,3 +43,11 @@ def populateBox(box, components):
         # HACK: Se há refresh precisa criar uma thread aqui
         # if comp.refresh > 0:
         #     pass
+        #
+
+
+def createWorkspacesComponent(box, workspace_text: str):
+    workspaces = workspace_text.split(",")
+    for workspace in workspaces:
+        print(f"workspace ==> {workspace}")
+        box.append(Gtk.Label(label=f"{workspace}"))
