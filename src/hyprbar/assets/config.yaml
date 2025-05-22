@@ -11,7 +11,7 @@ window:
     hor_spacing: 6
     components:
       - type: workspaces
-        text: ",󰢹,,󰾢,󱄲"
+        text: "1,2,3,4,5"
         css_id: "workspaces"
 
   center_container:

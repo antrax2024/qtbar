@@ -13,8 +13,8 @@
 
 #workspace-0 {
     color: #BBFBFF;
-    margin-left: 10px;
-    min-width: 30px;
+    min-width: 35px;
+    /* margin-left: 10px; */
 }
 
 #workspace-0.active {
@@ -26,8 +26,7 @@
 
 #workspace-1 {
     color: #BBFBFF;
-    margin-left: 10px;
-    min-width: 30px;
+    min-width: 35px;
 }
 
 #workspace-1.active {
@@ -40,8 +39,7 @@
 
 #workspace-2 {
     color: #BBFBFF;
-    margin-left: 10px;
-    min-width: 30px;
+    min-width: 35px;
 }
 
 #workspace-2.active {
@@ -55,8 +53,7 @@
 
 #workspace-3 {
     color: #BBFBFF;
-    margin-left: 10px;
-    min-width: 30px;
+    min-width: 35px;
 }
 
 #workspace-3.active {
@@ -69,8 +66,7 @@
 
 #workspace-4 {
     color: #BBFBFF;
-    margin-left: 10px;
-    min-width: 30px;
+    min-width: 35px;
 }
 
 #workspace-4.active {
@@ -78,6 +74,5 @@
     border-bottom-width: 2px;
     border-bottom-style: solid;
     border-bottom-color: #7CFC00;
-
 }
 

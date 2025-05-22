@@ -103,3 +103,7 @@ def createWorkspacesComponent(box, workspace_text: str):
     # Start worspaces thread
     thread = threading.Thread(target=workspacesThread, daemon=True)
     thread.start()
+
+
+def createClockComponent(box, clock_text: str):
+    pass
