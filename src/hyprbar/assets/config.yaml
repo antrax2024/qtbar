@@ -20,7 +20,7 @@ window:
       - type: clock
         icon: "󰦖"
         format: "%Y-%m-%d %H:%M:%S" # strftime
-        css_id: "clock"
+        css_id: "clock1"
         refresh: 1
 
   right_container:
@@ -29,6 +29,8 @@ window:
       - type: label
         text: "label 1"
         css_id: "label1"
-      - type: label
-        text: "label2"
-        css_id: "label2"
+      - type: clock
+        icon: "󰥔"
+        format: "%H:%M:%S" # strftime
+        css_id: "clock2"
+        refresh: 1 # 1 second

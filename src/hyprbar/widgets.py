@@ -44,6 +44,7 @@ def populateBox(box: Gtk.Box, components: List[ComponentConfig]):
                 icon=comp.icon,  # pyright: ignore # noqa
                 format=comp.format,  # pyright: ignore # noqa
                 refresh=comp.refresh,  # pyright: ignore # noqa
+                css_id=comp.css_id,  # pyright: ignore # noqa
             )
         else:
             widget = createWidget(comp)
@@ -120,11 +121,13 @@ def clockThread(clockLabel: Gtk.Label, format: str, refresh: int) -> None:
         time.sleep(refresh)
 
 
-def createClockComponent(box: Gtk.Box, icon: str, format: str, refresh: int = 1):
+def createClockComponent(
+    box: Gtk.Box, icon: str, format: str, css_id: str, refresh: int = 1
+):
     iconLabel = Gtk.Label(label=f"{icon}")
-    iconLabel.set_name("clock-icon")
-    clockLabel = Gtk.Label(label="00:00:00")
-    clockLabel.set_name("clock-label")
+    iconLabel.set_name(f"{css_id}-icon")
+    clockLabel = Gtk.Label()
+    clockLabel.set_name(f"{css_id}-label")
 
     thread = threading.Thread(
         target=clockThread,

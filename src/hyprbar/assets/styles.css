@@ -49,10 +49,17 @@
     border-bottom-color: #7CFC00;
 }
 
-#clock-icon {
+#clock1-icon {
   color: #9B7EBD;  
 }
-#clock-label {
+#clock1-label {
+  color: #FFE1E0;
+}
+
+#clock2-icon {
+  color: #FF9B45;
+}
+#clock2-label {
   color: #FFE1E0;
 }
 
@@ -81,7 +88,4 @@
     border-bottom-color: #7CFC00;
 }
 
-#clock {
-  color: #BBFBFF;
 
-}
