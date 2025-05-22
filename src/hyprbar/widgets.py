@@ -61,9 +61,7 @@ def workspacesThread() -> None:
     global currentWorkspaceID
     while True:
         wk = instance.get_active_workspace()
-        if wk.id > len(workspaces):
-            print("Daria um out off range... faço nada...")
-        else:
+        if wk.id <= len(workspaces):
             if wk.id != currentWorkspaceID:
                 # Remove active class
                 GLib.idle_add(

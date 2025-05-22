@@ -17,8 +17,10 @@
 }
 
 #workspace-0.active {
-    color: #DDA853;
-    background: #0E2148;
+    color: #7CFC00;
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
+    border-bottom-color: #7CFC00;
 }
 
 #workspace-1 {
@@ -28,7 +30,10 @@
 
 
 #workspace-1.active {
-    color: #DDA853;
+    color: #7CFC00;
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
+    border-bottom-color: #7CFC00;
 }
 
 #workspace-2 {
@@ -37,7 +42,10 @@
 }
 
 #workspace-2.active {
-    color: #DDA853;
+    color: #7CFC00;
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
+    border-bottom-color: #7CFC00;
 }
 
 #workspace-3 {
@@ -46,7 +54,10 @@
 }
 
 #workspace-3.active {
-    color: #DDA853;
+    color: #7CFC00;
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
+    border-bottom-color: #7CFC00;
 }
 
 
@@ -56,6 +67,10 @@
 }
 
 #workspace-4.active {
-    color: #DDA853;
+    color: #7CFC00;
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
+    border-bottom-color: #7CFC00;
+
 }
 
