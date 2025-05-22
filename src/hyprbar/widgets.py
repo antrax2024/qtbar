@@ -11,17 +11,7 @@ workspaces = []
 
 
 def createWidget(component):
-    if component.type == "workspaces":
-        # component.text
-        # transform string 1,2,3,4,5 on array
-        # workspaces =
-        workspaces = component.text.split(",")
-        for workspace in workspaces:
-            print(f"workspace ==> {workspace}")
-
-        return Gtk.Label(label=f"Workspaces: {', '.join(workspaces)}")
-
-    elif component.type == "label":
+    if component.type == "label":
         return Gtk.Label(label=component.text)
     elif component.type == "button":
         btn = Gtk.Button(label=component.text)
@@ -35,3 +25,26 @@ def createWidget(component):
     # Adicione outros tipos conforme necessário
 
     return None
+
+
+# TODO: função necessária
+#  GLib.timeout_add_seconds(component.refresh, update_label)
+def populateBox(box, components):
+    for comp in components:
+        if comp.type == "workspaces":
+            workspaces = comp.text.split(",")
+            for workspace in workspaces:
+                print(f"workspace ==> {workspace}")
+
+        else:
+            widget = createWidget(comp)
+            widget.set_name(comp.css_id)  # pyright: ignore # noqa
+            if widget:
+                box.append(widget)  # Para GTK4, use append
+            # if Markup: Ok, set_markup
+            if comp.markup:
+                widget.set_markup(comp.markup)  # pyright: ignore # noqa
+
+        # HACK: Se há refresh precisa criar uma thread aqui
+        # if comp.refresh > 0:
+        #     pass

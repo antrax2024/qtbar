@@ -12,7 +12,7 @@ from gi.repository import GLib  # pyright: ignore # noqa
 
 from hyprbar.config import HyprbarConfig  # pyright: ignore # noqa
 from hyprbar.constants import STYLE_FILE, ANCHOR  # pyright: ignore # noqa
-from hyprbar.widgets import createWidget  # pyright: ignore # noqa
+from hyprbar.widgets import populateBox  # pyright: ignore # noqa
 from hyprbar.util import printLog  # pyright: ignore # noqa
 
 
@@ -106,19 +106,26 @@ def on_activate(app):
 
 # TODO: função necessária
 #  GLib.timeout_add_seconds(component.refresh, update_label)
-def populateBox(box, components):
-    for comp in components:
-        widget = createWidget(comp)
-        widget.set_name(comp.css_id)  # pyright: ignore # noqa
-        # if Markup: Ok, set_markup
-        if comp.markup:
-            widget.set_markup(comp.markup)  # pyright: ignore # noqa
-
-        # HACK: Se há refresh precisa criar uma thread aqui
-        if comp.refresh > 0:
-            pass
-        if widget:
-            box.append(widget)  # Para GTK4, use append
+# def populateBox(box, components):
+#     for comp in components:
+#         if comp.type == "workspaces":
+#             workspaces = comp.text.split(",")
+#             for workspace in workspaces:
+#                 print(f"workspace ==> {workspace}")
+#
+#         else:
+#             widget = createWidget(comp)
+#             widget.set_name(comp.css_id)  # pyright: ignore # noqa
+#
+#         # if Markup: Ok, set_markup
+#         if comp.markup:
+#             widget.set_markup(comp.markup)  # pyright: ignore # noqa
+#
+#         # HACK: Se há refresh precisa criar uma thread aqui
+#         # if comp.refresh > 0:
+#         #     pass
+#         if widget:
+#             box.append(widget)  # Para GTK4, use append
 
 
 def runHyprBar(config: HyprbarConfig) -> None:
