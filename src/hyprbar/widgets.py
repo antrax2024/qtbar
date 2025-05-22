@@ -53,16 +53,25 @@ def populateBox(box: Gtk.Box, components: List[ComponentConfig]):
         #
 
 
+def workspaceAddActiveClass() -> None:
+    GLib.idle_add(workspaces[currentWorkspaceID - 1].add_css_class, "active")
+
+
 def workspacesThread() -> None:
     global currentWorkspaceID
     while True:
         wk = instance.get_active_workspace()
-        if wk.id != currentWorkspaceID:
-            # Remove active class
-            GLib.idle_add(workspaces[currentWorkspaceID - 1].remove_css_class, "active")
-            currentWorkspaceID = wk.id
-            # add css class
-            GLib.idle_add(workspaces[currentWorkspaceID - 1].add_css_class, "active")
+        if wk.id > len(workspaces):
+            print("Daria um out off range... faço nada...")
+        else:
+            if wk.id != currentWorkspaceID:
+                # Remove active class
+                GLib.idle_add(
+                    workspaces[currentWorkspaceID - 1].remove_css_class, "active"
+                )
+                currentWorkspaceID = wk.id
+                # add css class
+                workspaceAddActiveClass()
 
         time.sleep(0.1)
 
@@ -76,6 +85,7 @@ def updateWorkspace(id: int):
 
 def createWorkspacesComponent(box, workspace_text: str):
     global workspaces
+    global currentWorkspaceID
     wks = workspace_text.split(",")
 
     workspaces.clear()  # Limpa workspaces anterior
@@ -86,6 +96,8 @@ def createWorkspacesComponent(box, workspace_text: str):
         box.append(label)
 
     activeWorkspace = instance.get_active_workspace()
+    currentWorkspaceID = activeWorkspace.id
+    workspaceAddActiveClass()
     updateWorkspace(activeWorkspace.id)
     # Start worspaces thread
     thread = threading.Thread(target=workspacesThread, daemon=True)
