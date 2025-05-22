@@ -13,9 +13,10 @@ class ComponentConfig(BaseConfig):
     css_id: Optional[str] = None
     text: Optional[str] = None
     markup: Optional[str] = None
+    format: Optional[str] = None  # to clock format
     value: Optional[str] = None
     on_click: Optional[str] = None
-    refresh: Optional[int] = 0
+    refresh: Optional[int] = 1
 
 
 class ContainerConfig(BaseConfig):

@@ -17,9 +17,11 @@ window:
   center_container:
     hor_spacing: 6
     components:
-      - type: label
+      - type: clock
         markup: '<span foreground="green"> </span><span foreground="yellow">11:16:32</span>'
-        css_id: "labelCenter"
+        format: "%Y-%m-%d %H:%M:%S" # strftime
+        css_id: "clock"
+        refresh: 1
 
   right_container:
     hor_spacing: 6

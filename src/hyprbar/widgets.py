@@ -38,6 +38,8 @@ def populateBox(box: Gtk.Box, components: List[ComponentConfig]):
     for comp in components:
         if comp.type == "workspaces":
             createWorkspacesComponent(box=box, workspace_text=comp.text)  # pyright: ignore # noqa
+        elif comp.type == "clock":
+            createClockComponent(box=box, format=comp.format, refresh=comp.refresh)  # pyright: ignore # noqa
         else:
             widget = createWidget(comp)
             widget.set_name(comp.css_id)  # pyright: ignore # noqa
@@ -47,10 +49,11 @@ def populateBox(box: Gtk.Box, components: List[ComponentConfig]):
             if comp.markup:
                 widget.set_markup(comp.markup)  # pyright: ignore # noqa
 
-        # HACK: Se há refresh precisa criar uma thread aqui
-        # if comp.refresh > 0:
-        #     pass
-        #
+
+# HACK: Se há refresh precisa criar uma thread aqui
+# if comp.refresh > 0:
+#     pass
+#
 
 
 def workspaceSetActiveClass() -> None:
@@ -105,5 +108,19 @@ def createWorkspacesComponent(box, workspace_text: str):
     thread.start()
 
 
-def createClockComponent(box, clock_text: str):
-    pass
+def clockThread(label: Gtk.Label, format: str, refresh: int) -> None:
+    while True:
+        current_time = time.strftime(format)
+        GLib.idle_add(label.set_text, current_time)
+        time.sleep(refresh)
+
+
+def createClockComponent(box: Gtk.Box, format: str, refresh: int = 1):
+    label = Gtk.Label(label="00:00:00")
+    label.set_name("clock")
+    thread = threading.Thread(
+        target=clockThread, args=(label, format, refresh), daemon=True
+    )
+    thread.start()
+    box.append(label)
+    #
