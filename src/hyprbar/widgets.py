@@ -1,9 +1,14 @@
-from typing import List
+from typing import List, Any
+import threading
+import time
 from gi.repository import Gtk  # pyright: ignore #noqa
+from gi.repository import GLib  # pyright: ignore # noqa
 from hyprbar.config import ComponentConfig
+from hyprpy import Hyprland
 
-
+instance = Hyprland()
 workspaces = []
+currentWorkspaceID = 1
 
 
 # TODO: Criar um componente do tipo workspace
@@ -29,8 +34,6 @@ def createWidget(component):
     return None
 
 
-# TODO: função necessária
-#  GLib.timeout_add_seconds(component.refresh, update_label)
 def populateBox(box: Gtk.Box, components: List[ComponentConfig]):
     for comp in components:
         if comp.type == "workspaces":
@@ -50,12 +53,37 @@ def populateBox(box: Gtk.Box, components: List[ComponentConfig]):
         #
 
 
+def workspacesThread() -> None:
+    global currentWorkspaceID
+    while True:
+        wk = instance.get_active_workspace()
+        if wk.id != currentWorkspaceID:
+            print("ahhhh mudou de workspace....")
+            currentWorkspaceID = wk.id
+
+        time.sleep(0.1)
+
+
+def updateWorkspace(id: int):
+    global currentWorkspaceID
+    # Atualiza a interface na thread principal
+    GLib.idle_add(workspaces[id - 1].set_text, "gonha")
+    currentWorkspaceID = id
+
+
 def createWorkspacesComponent(box, workspace_text: str):
     global workspaces
     wks = workspace_text.split(",")
-    for index, wk in enumerate(wks):
-        workspaces[index] = Gtk.Label(label=f"{wk}")
-        workspaces[index].set_name(f"workspace-{index}")
-        box.append(workspaces[index])
 
-        # gonha
+    workspaces.clear()  # Limpa workspaces anterior
+    for wk in wks:
+        label = Gtk.Label(label=f"{wk}")
+        label.set_name(f"workspace-{len(workspaces)}")
+        workspaces.append(label)
+        box.append(label)
+
+    activeWorkspace = instance.get_active_workspace()
+    updateWorkspace(activeWorkspace.id)
+    # Start worspaces thread
+    thread = threading.Thread(target=workspacesThread, daemon=True)
+    thread.start()
