@@ -99,7 +99,7 @@ def createWorkspacesComponent(box, component: ComponentConfig) -> None:
     # Update every second (100ms)
     GLib.timeout_add(100, updateWorkspaces)
     # add active class
-    GLib.idle_add(workspaces[currentWorkspaceID - 1].add_css_class, "active")
+    GLib.idle_add(workspaces[currentWorkspaceID - 1].add_css_class, "workspace-active")
 
 
 def clockUpdate(clockLabel: Gtk.Label, format: str) -> bool:

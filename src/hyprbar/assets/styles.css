@@ -18,7 +18,7 @@
   min-width: 35px;
 }
 
-.workspace.active {
+.workspace-active {
   color: #7CFC00;
   border-bottom-width: 2px;
   border-bottom-style: solid;
