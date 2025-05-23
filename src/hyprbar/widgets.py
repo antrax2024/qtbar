@@ -29,18 +29,24 @@ def populateBox(box: Gtk.Box, components: List[ComponentConfig]) -> None:
             createKernelComponent(box=box, component=comp)
 
 
-def updateKernel(label: Gtk.Label, command: str) -> bool:
+def getKernelVersion(command: str) -> str:
     code, out, error = executeCommand(command=command)
-    label.set_text("".join(c for c in out if c not in "\n\r"))
+    if code == 0:
+        return "".join(c for c in out if c not in "\n\r")
+    else:
+        printLog(f"Error getting kernel version: {error}")
+        return f"{error}"
+
+
+def updateKernel(label: Gtk.Label, command: str) -> bool:
+    label.set_text(getKernelVersion(command=command))
     return True
 
 
 def createKernelComponent(box: Gtk.Box, component: ComponentConfig) -> None:
     kernelIcon = Gtk.Label(label=f"{component.icon}")  # pyright: ignore # noqa
     kernelIcon.set_name(f"{component.css_id}-icon")  # pyright: ignore # noqa
-    code, out, error = executeCommand(command=component.command)  # pyright: ignore # noqa
-    kernelLabel = Gtk.Label(label="".join(c for c in out if c not in "\n\r"))
-
+    kernelLabel = Gtk.Label(label=getKernelVersion(command=component.command))  # pyright: ignore # noqa
     kernelLabel.set_name(f"{component.css_id}-label")  # pyright: ignore # noqa
 
     box.append(kernelIcon)
