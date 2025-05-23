@@ -2,6 +2,7 @@ from typing import List
 from datetime import datetime
 from gi.repository import Gtk  # pyright: ignore #noqa
 from gi.repository import GLib  # pyright: ignore # noqa
+from gi.repository import Pango  # pyright: ignore # noqa
 from hyprbar.util import printLog, executeCommand
 from hyprpy import Hyprland
 from rich.console import Console
@@ -22,7 +23,7 @@ def populateBox(box: Gtk.Box, components: List[ComponentConfig]) -> None:
             createWorkspacesComponent(box=box, component=comp)  # pyright: ignore # noqa
         elif comp.type == "appswitch":
             printLog("Creating app switch component...")
-            createAppSwitchComponent()
+            createAppSwitchComponent(box)
         elif comp.type == "clock":
             printLog(f"Creating clock component => {comp.icon}")  # pyright: ignore # noqa
             createClockComponent(
@@ -126,17 +127,44 @@ def createClockComponent(box: Gtk.Box, comp: ComponentConfig):
     box.append(clockLabel)
 
 
-def updateAppSwitch() -> bool:
-    buttons = List[Gtk.Button]  # pyright: ignore # noqa
+def updateAppSwitch(box: Gtk.Box) -> bool:
     workspace = instance.get_active_workspace()
     for window in workspace.windows:
         cl.print(f"Window: {window.__dict__}")
+        app_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=4)
+        # Try to get app icon
+        icon = Gtk.Image()
+        icon.set_from_icon_name(window.wm_class.lower())
+        # Create label for app title
+        label = Gtk.Label(label=window.title)
+        label.set_ellipsize(Pango.EllipsizeMode.END)
+        label.set_max_width_chars(20)
+
+        # Pack icon and label into app_box
+        # app_box.set_halign(Gtk.Align.CENTER)
+        app_box.append(icon)
+        app_box.append(label)
+
+        # Create button with the box as content
+        button = Gtk.Button()
+        button.set_child(app_box)
+        button.set_name(f"app-{window.pid}")
+        button.add_css_class("appswitch")
+
+        # Add click handler to focus the window when clicked
+        # button.connect(
+        #     "clicked",
+        #     lambda btn, win_id=window.id: executeCommand(
+        #         f"hyprctl dispatch focuswindow address:{win_id}"
+        #     ),
+        # )
+        box.append(button)
 
     return True
 
 
-def createAppSwitchComponent() -> None:
-    updateAppSwitch()
+def createAppSwitchComponent(box: Gtk.Box) -> None:
+    updateAppSwitch(box)
 
 
 def createCPUComponent() -> None:

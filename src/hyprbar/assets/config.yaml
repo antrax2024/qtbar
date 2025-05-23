@@ -13,11 +13,11 @@ window:
       - type: workspaces
         ids: ["1", "2", "3", "4", "5"]
         css_id: "workspace"
+      - type: appswitch
 
   center_container:
     hor_spacing: 6
-    components:
-      - type: appswitch
+    components: []
 
   right_container:
     hor_spacing: 6

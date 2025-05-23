@@ -33,6 +33,14 @@
 }
 
 
+.appswitch {
+  background: rgba(0, 0, 0, 0.6);
+  color: #BBFBFF;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #BBFBFF;
+}
+
 #kernel-icon {
   color: hotpink;
 }
