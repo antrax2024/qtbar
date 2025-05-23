@@ -4,6 +4,7 @@
 from hyprbar.config import ComponentConfig
 from typing import List, Tuple
 from hyprpy import Hyprland
+from hyprbar.util import executeCommand
 from rich.console import Console
 from gi.repository import Gtk  # pyright: ignore #noqa
 from gi.repository import GLib  # pyright: ignore # noqa
@@ -19,7 +20,8 @@ class AppSwitch:
     ] = []  # array of tuples with workspace id and number of windows
     refresh: int = 300  # 300 miliseconds
 
-    def init__(self, config: ComponentConfig) -> None:
+    def init__(self, box: Gtk.Box, config: ComponentConfig) -> None:
+        self.box = box
         self.config = config
         self.updateAppSwitch()  # call updateAppSwitch to initialize the app switch
 
@@ -54,6 +56,6 @@ class AppSwitch:
                 ),
             )
 
-            box.append(button)
+            self.box.append(button)
 
         return True
