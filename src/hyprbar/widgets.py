@@ -23,7 +23,7 @@ def populateBox(box: Gtk.Box, components: List[ComponentConfig]) -> None:
             createWorkspacesComponent(box=box, component=comp)  # pyright: ignore # noqa
         elif comp.type == "appswitch":
             printLog("Creating app switch component...")
-            createAppSwitchComponent(box)
+            createAppSwitchComponent(box, comp)
         elif comp.type == "clock":
             printLog(f"Creating clock component => {comp.icon}")  # pyright: ignore # noqa
             createClockComponent(
@@ -127,7 +127,7 @@ def createClockComponent(box: Gtk.Box, comp: ComponentConfig):
     box.append(clockLabel)
 
 
-def updateAppSwitch(box: Gtk.Box) -> bool:
+def updateAppSwitch(box: Gtk.Box, config: ComponentConfig) -> bool:
     workspace = instance.get_active_workspace()
     for window in workspace.windows:
         cl.print(f"Window: {window.__dict__}")
@@ -162,9 +162,5 @@ def updateAppSwitch(box: Gtk.Box) -> bool:
     return True
 
 
-def createAppSwitchComponent(box: Gtk.Box) -> None:
-    updateAppSwitch(box)
-
-
-def createCPUComponent() -> None:
-    pass
+def createAppSwitchComponent(box: Gtk.Box, config: ComponentConfig) -> None:
+    updateAppSwitch(box, config)

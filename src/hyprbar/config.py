@@ -14,6 +14,8 @@ class ComponentConfig(BaseConfig):
 
 class AppSwitchConfig(ComponentConfig):
     type: Literal["appswitch"]  # pyright: ignore # noqa
+    workspaces: int = 1  # number of workspaces to display windows
+    css_id: Optional[str] = None  # css id for the component
 
 
 class KernelConfig(ComponentConfig):
