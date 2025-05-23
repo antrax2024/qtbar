@@ -7,6 +7,7 @@ from hyprbar.util import printLog, executeCommand
 from hyprpy import Hyprland
 from rich.console import Console
 from hyprbar.config import ComponentConfig
+from hyprbar.appswitch import AppSwitch
 
 
 cl = Console()
@@ -23,7 +24,7 @@ def populateBox(box: Gtk.Box, components: List[ComponentConfig]) -> None:
             createWorkspacesComponent(box=box, component=comp)  # pyright: ignore # noqa
         elif comp.type == "appswitch":
             printLog("Creating app switch component...")
-            createAppSwitchComponent(box, comp)
+            AppSwitch(box, comp)
         elif comp.type == "clock":
             printLog(f"Creating clock component => {comp.icon}")  # pyright: ignore # noqa
             createClockComponent(

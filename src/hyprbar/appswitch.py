@@ -20,42 +20,48 @@ class AppSwitch:
     ] = []  # array of tuples with workspace id and number of windows
     refresh: int = 300  # 300 miliseconds
 
-    def init__(self, box: Gtk.Box, config: ComponentConfig) -> None:
+    def __init__(self, box: Gtk.Box, config: ComponentConfig) -> None:
         self.box = box
         self.config = config
-        self.updateAppSwitch()  # call updateAppSwitch to initialize the app switch
+        # self.updateAppSwitch()
+        GLib.timeout_add(
+            self.refresh,
+            lambda: self.updateAppSwitch(),
+        )
 
     def updateAppSwitch(self) -> bool:
         # get current workspace
         workspace = self.hyprland.get_active_workspace()
         for window in workspace.windows:
             cl.print(f"Window: {window.__dict__}")
-            app_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=4)
-            # Try to get app icon
-            icon = Gtk.Image()
-            icon.set_from_icon_name(window.wm_class.lower())
-            # Create label for app title
-            label = Gtk.Label(label=window.title)
-            label.set_ellipsize(Pango.EllipsizeMode.END)
-            label.set_max_width_chars(20)
-
-            # Pack icon and label into app_box
-            app_box.append(icon)
-            app_box.append(label)
-
-            # Create button with the box as content
-            button = Gtk.Button()
-            button.set_child(app_box)
-            button.set_name(f"app-{window.pid}")
-            button.add_css_class("appswitch")
-            # Add click event to focus the window
-            button.connect(
-                "clicked",
-                lambda btn, win_addr=window.address: executeCommand(
-                    f"hyprctl dispatch focuswindow address:{win_addr}"
-                ),
-            )
-
-            self.box.append(button)
+            # determine if workspace id and window.id exists on self.overview
+            # feed self.overview with workspace id and number of windows
+            # if window.address exits in self.overview, remove it
+            if (workspace.id, window.address) not in self.overview:
+                self.overview.append((workspace.id, window.address))
+                app_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=4)
+                # Try to get app icon
+                icon = Gtk.Image()
+                icon.set_from_icon_name(window.wm_class.lower())
+                # Create label for app title
+                label = Gtk.Label(label=window.title)
+                label.set_ellipsize(Pango.EllipsizeMode.END)
+                label.set_max_width_chars(20)
+                # Pack icon and label into app_box
+                app_box.append(icon)
+                app_box.append(label)
+                # Create button with the box as content
+                button = Gtk.Button()
+                button.set_child(app_box)
+                button.set_name(f"app-{window.pid}")
+                button.add_css_class("appswitch")
+                # Add click event to focus the window
+                button.connect(
+                    "clicked",
+                    lambda _, win_addr=window.address: executeCommand(
+                        f"hyprctl dispatch focuswindow address:{win_addr}"
+                    ),
+                )
+                self.box.append(button)
 
         return True
