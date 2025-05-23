@@ -70,10 +70,14 @@ def updateWorkspaces() -> bool:
     if wk.id <= len(workspaces):
         if wk.id != currentWorkspaceID:
             # Remove active class
-            GLib.idle_add(workspaces[currentWorkspaceID - 1].remove_css_class, "active")
+            GLib.idle_add(
+                workspaces[currentWorkspaceID - 1].remove_css_class, "workspace-active"
+            )
             currentWorkspaceID = wk.id
             # add css class
-            GLib.idle_add(workspaces[currentWorkspaceID - 1].add_css_class, "active")
+            GLib.idle_add(
+                workspaces[currentWorkspaceID - 1].add_css_class, "workspace-active"
+            )
 
     return True
 
@@ -86,7 +90,7 @@ def createWorkspacesComponent(box, component: ComponentConfig) -> None:
         label = Gtk.Label(label=f"{id}")
         # css id for the workspace
         label.set_name(f"{component.css_id}-{index + 1}")  # pyright: ignore # noqa
-        label.add_css_class("hover")
+        label.add_css_class("workspace-hover")
         workspaces.append(label)
         box.append(label)
 
@@ -123,6 +127,7 @@ def createClockComponent(box: Gtk.Box, comp: ComponentConfig):
 
 
 def updateAppSwitch() -> bool:
+    buttons = List[Gtk.Button]  # pyright: ignore # noqa
     workspace = instance.get_active_workspace()
     for window in workspace.windows:
         cl.print(f"Window: {window.__dict__}")

@@ -18,22 +18,14 @@
   min-width: 35px;
 }
 
-#workspace-1.active,
-#workspace-2.active,
-#workspace-3.active,
-#workspace-4.active,
-#workspace-5.active {
+.workspace.active {
   color: #7CFC00;
   border-bottom-width: 2px;
   border-bottom-style: solid;
   border-bottom-color: #7CFC00;
 }
 
-#workspace-1:hover,
-#workspace-2:hover,
-#workspace-3:hover,
-#workspace-4:hover,
-#workspace-5:hover {
+.workspace-hover:hover {
   color: #DDA853;
   border-bottom-width: 2px;
   border-bottom-style: solid;
