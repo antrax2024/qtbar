@@ -38,17 +38,17 @@ def updateKernel(label: Gtk.Label, command: str) -> bool:
 def createKernelComponent(box: Gtk.Box, component: ComponentConfig) -> None:
     kernelIcon = Gtk.Label(label=f"{component.icon}")  # pyright: ignore # noqa
     kernelIcon.set_name(f"{component.css_id}-icon")  # pyright: ignore # noqa
-    kernelLabel = Gtk.Label(label=f"{executeCommand(component.command)}")  # pyright: ignore # noqa
+    kernelLabel = Gtk.Label(label=f"{executeCommand(component.command)[1]}")  # pyright: ignore # noqa
     kernelLabel.set_name(f"{component.css_id}-label")  # pyright: ignore # noqa
 
     box.append(kernelIcon)
     box.append(kernelLabel)
 
     # Update every refresh time
-    GLib.timeout_add(
-        component.refresh,  # pyright: ignore # noqa
-        lambda: updateKernel(label=kernelLabel, command=component.command),  # pyright: ignore # noqa
-    )
+    # GLib.timeout_add(
+    #     component.refresh,  # pyright: ignore # noqa
+    #     lambda: updateKernel(label=kernelLabel, command=component.command),  # pyright: ignore # noqa
+    # )
 
 
 def updateWorkspaces() -> bool:

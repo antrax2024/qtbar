@@ -21,6 +21,16 @@ components = []
 index = 0
 
 
+def createGtkBox(h_align: Gtk.Align) -> Gtk.Box:
+    retValue = Gtk.Box(
+        orientation=Gtk.Orientation.HORIZONTAL,
+        spacing=hyprBarConfig.window.left_container.hor_spacing,  # pyright: ignore # noqa
+    )
+    retValue.set_halign(h_align)
+    retValue.set_valign(Gtk.Align.CENTER)
+    return retValue
+
+
 def onActivate(app):
     printLog("on activate triggered")
     window = Gtk.Window(application=app)
@@ -68,28 +78,13 @@ def onActivate(app):
     LayerShell.auto_exclusive_zone_enable(window)
 
     printLog("Creating leftGtkBox for window...")
-    leftGtkBox = Gtk.Box(
-        orientation=Gtk.Orientation.HORIZONTAL,
-        spacing=hyprBarConfig.window.left_container.hor_spacing,  # pyright: ignore # noqa
-    )
-    leftGtkBox.set_halign(Gtk.Align.START)
-    leftGtkBox.set_valign(Gtk.Align.CENTER)
+    leftGtkBox = createGtkBox(Gtk.Align.START)
 
     printLog("Creating centerGtkBox for window...")
-    centerGtkBox = Gtk.Box(
-        orientation=Gtk.Orientation.HORIZONTAL,
-        spacing=hyprBarConfig.window.center_container.hor_spacing,  # pyright: ignore # noqa
-    )  # pyright: ignore # noqa
-    centerGtkBox.set_halign(Gtk.Align.CENTER)
-    centerGtkBox.set_valign(Gtk.Align.CENTER)
+    centerGtkBox = createGtkBox(Gtk.Align.CENTER)
 
     printLog("Creating rightGtkBox for window...")
-    rightGtkBox = Gtk.Box(
-        orientation=Gtk.Orientation.HORIZONTAL,
-        spacing=hyprBarConfig.window.right_container.hor_spacing,  # pyright: ignore # noqa
-    )  # pyright: ignore # noqa
-    rightGtkBox.set_halign(Gtk.Align.END)
-    rightGtkBox.set_valign(Gtk.Align.CENTER)
+    rightGtkBox = createGtkBox(Gtk.Align.END)
 
     mainBox.append(leftGtkBox)
     mainBox.append(centerGtkBox)
