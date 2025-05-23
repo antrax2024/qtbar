@@ -141,7 +141,6 @@ def updateAppSwitch(box: Gtk.Box) -> bool:
         label.set_max_width_chars(20)
 
         # Pack icon and label into app_box
-        # app_box.set_halign(Gtk.Align.CENTER)
         app_box.append(icon)
         app_box.append(label)
 
@@ -150,14 +149,14 @@ def updateAppSwitch(box: Gtk.Box) -> bool:
         button.set_child(app_box)
         button.set_name(f"app-{window.pid}")
         button.add_css_class("appswitch")
+        # Add click event to focus the window
+        button.connect(
+            "clicked",
+            lambda btn, win_addr=window.address: executeCommand(
+                f"hyprctl dispatch focuswindow address:{win_addr}"
+            ),
+        )
 
-        # Add click handler to focus the window when clicked
-        # button.connect(
-        #     "clicked",
-        #     lambda btn, win_id=window.id: executeCommand(
-        #         f"hyprctl dispatch focuswindow address:{win_id}"
-        #     ),
-        # )
         box.append(button)
 
     return True

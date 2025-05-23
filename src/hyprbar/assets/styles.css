@@ -41,6 +41,12 @@
   border-color: #BBFBFF;
 }
 
+.appswitch:hover {
+  color: lightgreen;
+  border-color: lightgreen;
+}
+
+
 #kernel-icon {
   color: hotpink;
 }
