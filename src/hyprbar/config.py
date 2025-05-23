@@ -12,6 +12,10 @@ class ComponentConfig(BaseConfig):
     type: str
 
 
+class AppSwitchConfig(ComponentConfig):
+    type: Literal["appswitch"]  # pyright: ignore # noqa
+
+
 class KernelConfig(ComponentConfig):
     type: Literal["kernel"]  # pyright: ignore # noqa
     icon: Optional[str] = None  # icon  nerd font or emoji
@@ -34,7 +38,7 @@ class ClockConfig(ComponentConfig):
     refresh: Optional[int] = 1
 
 
-ComponentUnion = Union[KernelConfig, WorkspacesConfig, ClockConfig]
+ComponentUnion = Union[AppSwitchConfig, KernelConfig, WorkspacesConfig, ClockConfig]
 
 
 class ContainerConfig(BaseConfig):

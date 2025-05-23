@@ -4,9 +4,11 @@ from gi.repository import Gtk  # pyright: ignore #noqa
 from gi.repository import GLib  # pyright: ignore # noqa
 from hyprbar.util import printLog, executeCommand
 from hyprpy import Hyprland
-
+from rich.console import Console
 from hyprbar.config import ComponentConfig
 
+
+cl = Console()
 instance = Hyprland()
 workspaces = []
 currentWorkspaceID = 1
@@ -18,6 +20,9 @@ def populateBox(box: Gtk.Box, components: List[ComponentConfig]) -> None:
         if comp.type == "workspaces":
             printLog("Creating workspaces component...")
             createWorkspacesComponent(box=box, component=comp)  # pyright: ignore # noqa
+        elif comp.type == "appswitch":
+            printLog("Creating app switch component...")
+            createAppSwitchComponent()
         elif comp.type == "clock":
             printLog(f"Creating clock component => {comp.icon}")  # pyright: ignore # noqa
             createClockComponent(
@@ -115,6 +120,18 @@ def createClockComponent(box: Gtk.Box, comp: ComponentConfig):
     printLog(f"Append icon and label to box...")  # pyright: ignore # noqa
     box.append(iconLabel)
     box.append(clockLabel)
+
+
+def updateAppSwitch() -> bool:
+    workspace = instance.get_active_workspace()
+    for window in workspace.windows:
+        cl.print(f"Window: {window.__dict__}")
+
+    return True
+
+
+def createAppSwitchComponent() -> None:
+    updateAppSwitch()
 
 
 def createCPUComponent() -> None:
