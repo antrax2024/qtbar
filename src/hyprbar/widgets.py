@@ -31,24 +31,26 @@ def populateBox(box: Gtk.Box, components: List[ComponentConfig]) -> None:
 
 def updateKernel(label: Gtk.Label, command: str) -> bool:
     code, out, error = executeCommand(command=command)
-    label.set_text(out)
+    label.set_text("".join(c for c in out if c not in "\n\r"))
     return True
 
 
 def createKernelComponent(box: Gtk.Box, component: ComponentConfig) -> None:
     kernelIcon = Gtk.Label(label=f"{component.icon}")  # pyright: ignore # noqa
     kernelIcon.set_name(f"{component.css_id}-icon")  # pyright: ignore # noqa
-    kernelLabel = Gtk.Label(label=f"{executeCommand(component.command)[1]}")  # pyright: ignore # noqa
+    code, out, error = executeCommand(command=component.command)  # pyright: ignore # noqa
+    kernelLabel = Gtk.Label(label="".join(c for c in out if c not in "\n\r"))
+
     kernelLabel.set_name(f"{component.css_id}-label")  # pyright: ignore # noqa
 
     box.append(kernelIcon)
     box.append(kernelLabel)
 
     # Update every refresh time
-    # GLib.timeout_add(
-    #     component.refresh,  # pyright: ignore # noqa
-    #     lambda: updateKernel(label=kernelLabel, command=component.command),  # pyright: ignore # noqa
-    # )
+    GLib.timeout_add(
+        component.refresh,  # pyright: ignore # noqa
+        lambda: updateKernel(label=kernelLabel, command=component.command),  # pyright: ignore # noqa
+    )
 
 
 def updateWorkspaces() -> bool:
