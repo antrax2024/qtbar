@@ -311,64 +311,206 @@ class TrayIconManager:
                 printLog(f"Item {item_data['original_address']} new status: {status}")
 
     def _update_item_icon(self, item_proxy, icon_widget: Gtk.Image):
-        # (Implementation of _update_item_icon method as before)
         pixbuf = None
+        target_size = icon_widget.get_pixel_size() or 24
+
+        proxy_name_obj = (
+            item_proxy.get_name()
+            if hasattr(item_proxy, "get_name")
+            else "unknown_proxy_obj"
+        )
+        printLog(
+            f"Updating icon for proxy object: {proxy_name_obj}"
+        )  # Log do nome do objeto proxy D-Bus
+
         try:
-            # 1. Try IconPixmap
-            icon_pixmap_variant = item_proxy.get_cached_property("IconPixmap")
-            if icon_pixmap_variant:
-                pixmap_array = icon_pixmap_variant.get_variant()
-                if pixmap_array and pixmap_array.n_children() > 0:
+            # 1. Try IconPixmap first
+            # icon_pixmap_variant_from_prop é esperado ser um GVariant do tipo a(iiay)
+            icon_pixmap_variant_from_prop = item_proxy.get_cached_property("IconPixmap")
+
+            # Verifica se o GVariant existe e é do tipo correto 'a(iiay)' (array de struct de int, int, array de bytes)
+            if (
+                icon_pixmap_variant_from_prop
+                and icon_pixmap_variant_from_prop.is_of_type(
+                    GLib.VariantType.new("a(iiay)")
+                )
+            ):
+                # Removida a linha: pixmap_array = icon_pixmap_variant_from_prop.get_variant()
+                # Usamos icon_pixmap_variant_from_prop diretamente como o array.
+
+                printLog(
+                    f"IconPixmap variant (type 'a(iiay)') found for {proxy_name_obj}"
+                )
+
+                if icon_pixmap_variant_from_prop.n_children() > 0:
+                    printLog(
+                        f"IconPixmap has {icon_pixmap_variant_from_prop.n_children()} entries for {proxy_name_obj}"
+                    )
                     best_pixmap_data = None
-                    target_size = icon_widget.get_pixel_size()
                     min_diff = float("inf")
 
-                    for i in range(pixmap_array.n_children()):
-                        struct = pixmap_array.get_child_value(i)
+                    for i in range(icon_pixmap_variant_from_prop.n_children()):
+                        struct = icon_pixmap_variant_from_prop.get_child_value(
+                            i
+                        )  # struct é (iiay)
                         width = struct.get_child_value(0).get_int32()
                         height = struct.get_child_value(1).get_int32()
+
+                        printLog(f"Pixmap entry {i}: {width}x{height}")
+
+                        # Validar dimensões
+                        if width <= 0 or height <= 0 or width > 512 or height > 512:
+                            printLog(
+                                f"Invalid dimensions for pixmap entry {i}: {width}x{height}"
+                            )
+                            continue
 
                         current_diff = abs(width - target_size) + abs(
                             height - target_size
                         )
                         if best_pixmap_data is None or current_diff < min_diff:
                             min_diff = current_diff
-                            data_bytes_variant = struct.get_child_value(2)
+                            data_bytes_variant = struct.get_child_value(
+                                2
+                            )  # GVariant 'ay' (array de bytes)
                             data_bytes = bytes(data_bytes_variant.get_bytestring())
-                            best_pixmap_data = (width, height, data_bytes)
+
+                            # Verificar se o tamanho dos dados está correto
+                            expected_size = width * height * 4  # ARGB32
+                            if len(data_bytes) == expected_size:
+                                best_pixmap_data = (width, height, data_bytes)
+                                printLog(
+                                    f"Valid pixmap data found for entry {i}: {width}x{height}, {len(data_bytes)} bytes"
+                                )
+                            else:
+                                printLog(
+                                    f"Invalid data size for pixmap entry {i}: expected {expected_size}, got {len(data_bytes)}"
+                                )
 
                     if best_pixmap_data:
                         w, h, data = best_pixmap_data
-                        pixbuf = GdkPixbuf.Pixbuf.new_from_bytes(
-                            GLib.Bytes.new(data),
-                            GdkPixbuf.Colorspace.RGB,
-                            True,
-                            8,
-                            w,
-                            h,
-                            w * 4,
-                        )
+                        try:
+                            # Converter ARGB32 para RGBA
+                            rgba_data = bytearray(len(data))
+                            for idx in range(0, len(data), 4):
+                                a, r, g, b = (
+                                    data[idx],
+                                    data[idx + 1],
+                                    data[idx + 2],
+                                    data[idx + 3],
+                                )
+                                (
+                                    rgba_data[idx],
+                                    rgba_data[idx + 1],
+                                    rgba_data[idx + 2],
+                                    rgba_data[idx + 3],
+                                ) = r, g, b, a
+
+                            current_pixbuf = GdkPixbuf.Pixbuf.new_from_bytes(
+                                GLib.Bytes.new(rgba_data),
+                                GdkPixbuf.Colorspace.RGB,
+                                True,  # has_alpha
+                                8,  # bits_per_sample
+                                w,
+                                h,
+                                w * 4,  # rowstride
+                            )
+
+                            # Redimensionar se necessário
+                            # (Comparar com target_size para largura e altura, se desejar manter proporção ou preencher)
+                            if target_size != w or target_size != h:
+                                pixbuf = current_pixbuf.scale_simple(
+                                    target_size,
+                                    target_size,
+                                    GdkPixbuf.InterpType.BILINEAR,
+                                )
+                            else:
+                                pixbuf = current_pixbuf  # Usar o pixbuf como está se o tamanho já for o desejado
+
+                            printLog(
+                                f"Successfully created pixbuf from IconPixmap for {proxy_name_obj}"
+                            )
+
+                        except Exception as e_pixbuf:
+                            printLog(
+                                f"Error creating pixbuf from IconPixmap data for {proxy_name_obj}: {e_pixbuf}"
+                            )
+                            pixbuf = None  # Garante que pixbuf seja None em caso de erro aqui
+                else:  # n_children == 0
+                    printLog(f"IconPixmap array is empty for {proxy_name_obj}")
+
+            elif (
+                icon_pixmap_variant_from_prop
+            ):  # A propriedade existe, mas não é do tipo 'a(iiay)'
+                printLog(
+                    f"IconPixmap property found for {proxy_name_obj}, but it's of unexpected type: {icon_pixmap_variant_from_prop.get_type_string()}"
+                )
+            else:  # A propriedade não existe (retornou None de get_cached_property)
+                printLog(f"No IconPixmap property found for {proxy_name_obj}")
+
+            # Se conseguiu criar o pixbuf, usar ele
             if pixbuf:
                 icon_widget.set_from_pixbuf(pixbuf)
+                printLog(f"Icon set from pixbuf for {proxy_name_obj}")
                 return
 
-            # 2. Fallback to IconName
+            # 2. Fallback para IconName
             icon_name_variant = item_proxy.get_cached_property("IconName")
             if icon_name_variant:
                 icon_name = icon_name_variant.get_string()
-                if icon_name:
-                    icon_widget.set_from_icon_name(icon_name)
-                    return
-
-            icon_widget.set_from_icon_name("image-missing")
-
-        except Exception as e:  # More generic to catch any D-Bus or processing error
-            if hasattr(item_proxy, "get_name"):
-                proxy_name = item_proxy.get_name()
+                printLog(f"IconName found for {proxy_name_obj}: '{icon_name}'")
+                if icon_name and icon_name.strip():
+                    icon_theme = Gtk.IconTheme.get_for_display(
+                        Gdk.Display.get_default()  # pyright: ignore
+                    )
+                    if icon_theme.has_icon(icon_name):
+                        icon_widget.set_from_icon_name(icon_name)
+                        printLog(
+                            f"Icon set from theme for {proxy_name_obj}: {icon_name}"
+                        )
+                        return
+                    else:
+                        printLog(
+                            f"Icon '{icon_name}' not found in theme for {proxy_name_obj}"
+                        )
             else:
-                proxy_name = "unknown proxy"  # If the proxy is invalid
-            printLog(f"Error updating icon for {proxy_name}: {e}")
-            icon_widget.set_from_icon_name("image-missing")
+                printLog(f"No IconName property found for {proxy_name_obj}")
+
+            # 3. Último fallback - tentar AttentionIconName
+            attention_icon_variant = item_proxy.get_cached_property("AttentionIconName")
+            if attention_icon_variant:
+                attention_icon = attention_icon_variant.get_string()
+                printLog(
+                    f"AttentionIconName found for {proxy_name_obj}: '{attention_icon}'"
+                )
+                if attention_icon and attention_icon.strip():
+                    icon_theme = Gtk.IconTheme.get_for_display(
+                        Gdk.Display.get_default()  # pyright: ignore
+                    )
+                    if icon_theme.has_icon(attention_icon):
+                        icon_widget.set_from_icon_name(attention_icon)
+                        printLog(
+                            f"Icon set from attention icon for {proxy_name_obj}: {attention_icon}"
+                        )
+                        return
+                    else:
+                        printLog(
+                            f"Attention icon '{attention_icon}' not found in theme for {proxy_name_obj}"
+                        )
+            else:
+                printLog(f"No AttentionIconName property found for {proxy_name_obj}")
+
+            # Se nada funcionou, usar ícone padrão
+            printLog(
+                f"Using fallback icon (application-x-executable) for {proxy_name_obj}"
+            )
+            icon_widget.set_from_icon_name("application-x-executable")
+
+        except Exception as e:
+            printLog(f"Error updating icon for {proxy_name_obj}: {e}")
+            icon_widget.set_from_icon_name(
+                "application-x-executable"
+            )  # Fallback em caso de erro inesperado
 
     def _update_item_tooltip(self, item_proxy, icon_widget: Gtk.Image):
         # (Implementation of _update_item_tooltip method as before)
