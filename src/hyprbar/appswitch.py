@@ -69,7 +69,7 @@ class AppSwitch:
 
                 self.box.append(button)
 
-            if len(self.windowsAddresses) != len(self.hyprland.get_windows()):
+            if len(self.windowsAddresses) > len(self.hyprland.get_windows()):
                 lastChild = self.box.get_last_child()
                 if lastChild:
                     self.box.remove(lastChild)
