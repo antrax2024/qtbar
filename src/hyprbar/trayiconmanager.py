@@ -316,7 +316,25 @@ class TrayIconManager:
 
         proxy_name = getattr(item_proxy, "get_name", lambda: "unknown proxy")()
         printLog(f"Updating icon for proxy: {proxy_name}")
+        printLog(
+            f"Interface name for proxy {proxy_name}: {item_proxy.get_interface_name()}"
+        )  # Deve ser org.freedesktop.StatusNotifierItem
 
+        # Debug: Listar todas as propriedades em cache para este proxy
+        prop_names_variant = item_proxy.get_cached_property_names()
+        if prop_names_variant:
+            prop_names_list = prop_names_variant.get_strv()
+            printLog(
+                f"Proxy {proxy_name} available cached properties: {prop_names_list}"
+            )
+            if not prop_names_list:
+                printLog(
+                    f"Proxy {proxy_name} - get_cached_property_names() returned an empty list."
+                )
+        else:
+            printLog(f"Proxy {proxy_name} - get_cached_property_names() returned None.")
+
+        # ... (resto do seu código como está) ...
         try:
             # 1. Try IconPixmap first
             icon_pixmap_variant = item_proxy.get_cached_property(
