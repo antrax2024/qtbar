@@ -8,6 +8,7 @@ from hyprpy import Hyprland
 from rich.console import Console
 from hyprbar.config import ComponentConfig
 from hyprbar.appswitch import AppSwitch
+from hyprbar.trayiconmanager import TrayIconManager
 
 
 cl = Console()
@@ -34,6 +35,9 @@ def populateBox(box: Gtk.Box, components: List[ComponentConfig]) -> None:
         elif comp.type == "kernel":
             printLog("Creating kernel component...")
             createKernelComponent(box=box, component=comp)
+        elif comp.type == "tray":
+            printLog("Creating tray component...")
+            TrayIconManager(box)
 
 
 def getKernelVersion(command: str) -> str:

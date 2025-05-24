@@ -33,3 +33,6 @@ window:
         format: "%Y-%m-%d %H:%M:%S"
         css_id: "clock"
         refresh: 1
+
+      - type: tray
+        css_id: "tray"

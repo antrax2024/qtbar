@@ -12,6 +12,11 @@ class ComponentConfig(BaseConfig):
     type: str
 
 
+class TrayIconManagerConfig(ComponentConfig):
+    type: Literal["tray"]  # pyright: ignore # noqa
+    css_id: Optional[str] = None  # css id for the component
+
+
 class AppSwitchConfig(ComponentConfig):
     type: Literal["appswitch"]  # pyright: ignore # noqa
     workspaces: int = 1  # number of workspaces to display windows
@@ -40,7 +45,9 @@ class ClockConfig(ComponentConfig):
     refresh: Optional[int] = 1
 
 
-ComponentUnion = Union[AppSwitchConfig, KernelConfig, WorkspacesConfig, ClockConfig]
+ComponentUnion = Union[
+    TrayIconManagerConfig, AppSwitchConfig, KernelConfig, WorkspacesConfig, ClockConfig
+]
 
 
 class ContainerConfig(BaseConfig):

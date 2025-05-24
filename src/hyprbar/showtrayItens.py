@@ -11,14 +11,6 @@ def check_sni_services():
         print("🔍 SNI SERVICES DETECTED:")
         print("-" * 50)
 
-        # sni_services = [name for name in names if "StatusNotifierItem" in name]
-        #
-        # if sni_services:
-        #     for service in sni_services:
-        #         print(f"📡 {service}")
-        # else:
-        #     print("❌ No SNI services found")
-
         # Check StatusNotifierWatcher
         watcher_service = "org.kde.StatusNotifierWatcher"
         if watcher_service in names:  # pyright: ignore # noqa
