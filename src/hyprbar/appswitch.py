@@ -17,9 +17,7 @@ cl = Console()
 
 class AppSwitch:
     hyprland = Hyprland()  # instance of Hyprland
-    overview: List[
-        Tuple
-    ] = []  # array of tuples with workspace id and number of windows
+    windowsAddresses: List[str] = []
     refresh: int = 300  # 300 miliseconds
 
     def __init__(self, box: Gtk.Box, config: ComponentConfig) -> None:
@@ -43,9 +41,8 @@ class AppSwitch:
         # get current workspace
         workspace = self.hyprland.get_active_workspace()
         for window in workspace.windows:
-            # if window.address exits in self.overview, remove it
-            if (workspace.id, window.address) not in self.overview:
-                self.overview.append((workspace.id, window.address))
+            if window.address not in self.windowsAddresses:
+                self.windowsAddresses.append(window.address)
                 app_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=4)
                 # Try to get app icon
                 icon = Gtk.Image()
@@ -72,10 +69,10 @@ class AppSwitch:
 
                 self.box.append(button)
 
-            if len(self.overview) > workspace.window_count:
+            if len(self.windowsAddresses) != len(self.hyprland.get_windows()):
                 lastChild = self.box.get_last_child()
                 if lastChild:
                     self.box.remove(lastChild)
-                    self.overview.pop()
+                    self.windowsAddresses.pop()
 
         return True
