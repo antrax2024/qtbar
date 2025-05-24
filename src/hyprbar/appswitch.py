@@ -42,12 +42,7 @@ class AppSwitch:
     def updateAppSwitch(self) -> bool:
         # get current workspace
         workspace = self.hyprland.get_active_workspace()
-        numberOfWindows = 0
         for window in workspace.windows:
-            numberOfWindows += 1
-            # cl.print(f"Window: {window.__dict__}")
-            # determine if workspace id and window.id exists on self.overview
-            # feed self.overview with workspace id and number of windows
             # if window.address exits in self.overview, remove it
             if (workspace.id, window.address) not in self.overview:
                 self.overview.append((workspace.id, window.address))
