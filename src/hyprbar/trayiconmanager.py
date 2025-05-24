@@ -3,6 +3,7 @@ import gi
 gi.require_version("Gtk", "4.0")
 gi.require_version("GdkPixbuf", "2.0")
 from gi.repository import Gtk, Gio, GLib, GdkPixbuf, Gdk  # pyright: ignore # noqa
+from hyprbar.util import printLog
 
 
 class TrayIconManager:
@@ -20,13 +21,13 @@ class TrayIconManager:
         try:
             self._dbus_connection = Gio.bus_get_sync(Gio.BusType.SESSION, None)
         except GLib.Error as e:
-            print(f"Error connecting to D-Bus: {e}")
+            printLog(f"Error connecting to D-Bus: {e}")
             # Consider raising an exception or setting an error state here
             return
 
     def _init_watcher(self):
         if not self._dbus_connection:
-            print("D-Bus connection not available to start the watcher.")
+            printLog("D-Bus connection not available to start the watcher.")
             return
 
         watcher_specs = [
@@ -73,7 +74,7 @@ class TrayIconManager:
                         0
                     ).get_string()
                     if owner_name_str:  # Check if the owner name is not empty
-                        print(
+                        printLog(
                             f"Service {spec['bus_name']} is active, owned by: {owner_name_str}."
                         )
                         # Now, try to create the proxy for the watcher service.
@@ -86,16 +87,18 @@ class TrayIconManager:
                             spec["interface_name"],  # Its interface
                             None,  # Cancellable
                         )
-                        print(f"Connected to StatusNotifierWatcher: {spec['bus_name']}")
+                        printLog(
+                            f"Connected to StatusNotifierWatcher: {spec['bus_name']}"
+                        )
                         break  # Successfully connected, exit the loop
                     else:
                         # Rare case for GetNameOwner, which usually returns a valid name or error.
-                        print(
+                        printLog(
                             f"Service {spec['bus_name']} GetNameOwner returned an empty owner name."
                         )
                 else:
                     # Uncommon case for call_sync to return None without GLib.Error.
-                    print(
+                    printLog(
                         f"GetNameOwner for {spec['bus_name']} returned None without explicit GLib.Error."
                     )
 
@@ -104,14 +107,14 @@ class TrayIconManager:
                 # 1. org.freedesktop.DBus.Error.NameHasNoOwner from GetNameOwner.
                 # 2. Network errors, timeouts, etc., from GetNameOwner.
                 # 3. Errors from Gio.DBusProxy.new_sync if GetNameOwner succeeded but proxy creation failed.
-                print(
+                printLog(
                     f"Could not use service {spec['bus_name']}: {e.message} (Domain: {e.domain}, Code: {e.code})"
                 )
                 self._watcher_proxy = (
                     None  # Ensure the proxy is None if this attempt fails
                 )
         if not self._watcher_proxy:
-            print("Could not connect to any StatusNotifierWatcher service.")
+            printLog("Could not connect to any StatusNotifierWatcher service.")
             return
 
         handler_id = self._watcher_proxy.connect("g-signal", self._on_watcher_signal)
@@ -123,29 +126,31 @@ class TrayIconManager:
             )
             if registered_items_variant:
                 item_addresses = registered_items_variant.get_strv()
-                print(f"Initial tray items: {item_addresses}")
+                printLog(f"Initial tray items: {item_addresses}")
                 for address in item_addresses:
                     # Use GLib.idle_add to queue the addition in the main loop,
                     # ensuring that subsequent UI and D-Bus operations are well-behaved.
                     GLib.idle_add(self._add_tray_item, address)
             else:
-                print("No tray items initially registered or property not available.")
+                printLog(
+                    "No tray items initially registered or property not available."
+                )
         except GLib.Error as e:
-            print(f"Error getting RegisteredStatusNotifierItems: {e}")
+            printLog(f"Error getting RegisteredStatusNotifierItems: {e}")
 
     def _on_watcher_signal(self, proxy, sender_name, signal_name, parameters):
         if signal_name == "StatusNotifierItemRegistered":
             full_item_address = parameters.get_child_value(0).get_string()
-            print(f"D-Bus Signal: Item Registered: {full_item_address}")
+            printLog(f"D-Bus Signal: Item Registered: {full_item_address}")
             GLib.idle_add(self._add_tray_item, full_item_address)
         elif signal_name == "StatusNotifierItemUnregistered":
             full_item_address = parameters.get_child_value(0).get_string()
-            print(f"D-Bus Signal: Item Unregistered: {full_item_address}")
+            printLog(f"D-Bus Signal: Item Unregistered: {full_item_address}")
             GLib.idle_add(self._remove_tray_item, full_item_address)
 
     def _add_tray_item(self, full_item_address: str):
         if not self._dbus_connection:
-            print(f"Cannot add {full_item_address}: D-Bus connection lost.")
+            printLog(f"Cannot add {full_item_address}: D-Bus connection lost.")
             return
 
         # Parse full_item_address to get service_name and object_path
@@ -164,12 +169,12 @@ class TrayIconManager:
 
         # The key for status_notifier_items should be unique. full_item_address is ideal.
         if full_item_address in self.status_notifier_items:
-            print(f"Item {full_item_address} already added (using original key).")
+            printLog(f"Item {full_item_address} already added (using original key).")
             return
 
         # Validate the parsed service name and object path
         if not Gio.dbus_is_name(service_name):
-            print(
+            printLog(
                 f"Invalid D-Bus service name '{service_name}' derived from '{full_item_address}'. Skipping."
             )
             return
@@ -180,14 +185,14 @@ class TrayIconManager:
             # or for broader compatibility, although strict validation is better.
             # if not (object_path.startswith('/') and object_path != '/'):
             if not object_path.startswith("/"):  # Basic check
-                print(
+                printLog(
                     f"Invalid D-Bus object path '{object_path}' (must start with '/'). Skipping."
                 )
                 return
 
         item_interface_name = "org.freedesktop.StatusNotifierItem"
         try:
-            print(
+            printLog(
                 f"Trying to create proxy for service: '{service_name}', path: '{object_path}'"
             )
             item_proxy = Gio.DBusProxy.new_sync(
@@ -202,20 +207,22 @@ class TrayIconManager:
         except (
             GLib.Error
         ) as e:  # Catch GLib errors, which may include proxy creation failures
-            print(
+            printLog(
                 f"GLib.Error creating D-Bus proxy for service '{service_name}' at '{object_path}': {e}"
             )
             return
         except (
             TypeError
         ) as e:  # Catch the specific TypeError if the constructor returns NULL
-            print(
+            printLog(
                 f"TypeError (probably constructor returned NULL) creating proxy for '{service_name}' at '{object_path}': {e}"
             )
             return
 
         if not item_proxy:  # Double check, although TypeError should catch NULL
-            print(f"Proxy not created (NULL) for '{service_name}' at '{object_path}'.")
+            printLog(
+                f"Proxy not created (NULL) for '{service_name}' at '{object_path}'."
+            )
             return
 
         icon_widget = Gtk.Image(pixel_size=24)
@@ -248,7 +255,7 @@ class TrayIconManager:
         self.status_notifier_items[full_item_address] = (
             item_data  # Use full_item_address as key
         )
-        print(
+        printLog(
             f"Added tray item: {full_item_address} (Service: {service_name}, Path: {object_path})"
         )
 
@@ -264,7 +271,7 @@ class TrayIconManager:
                 except (
                     Exception
                 ) as e:  # Be more specific with the exception if possible
-                    print(
+                    printLog(
                         f"Error disconnecting signal from item {item_data.get('original_address', full_item_address)}: {e}"
                     )
 
@@ -274,15 +281,15 @@ class TrayIconManager:
             if widget and widget.get_parent():  # Ensure the widget is still in the box
                 self.tray_box.remove(widget)
 
-            print(f"Removed tray item: {full_item_address}")
+            printLog(f"Removed tray item: {full_item_address}")
         else:
-            print(f"Attempt to remove non-existent tray item: {full_item_address}")
+            printLog(f"Attempt to remove non-existent tray item: {full_item_address}")
 
     def _on_item_signal(self, proxy, sender_name, signal_name, parameters, item_data):
         # item_data is passed here
         widget = item_data["widget"]
         if not widget or not widget.get_parent():  # Widget may have been removed
-            print(
+            printLog(
                 f"Widget for {item_data['original_address']} not found or not parented, skipping signal update {signal_name}."
             )
             # Consider disconnecting the signal here if the item should no longer be managed.
@@ -291,7 +298,7 @@ class TrayIconManager:
             # proxy.disconnect(item_data["signal_handler_id"])
             # item_data["signal_handler_id"] = None # Avoid multiple disconnection attempts
             # except Exception as e:
-            # print(f"Error trying to auto-disconnect signal for orphaned item: {e}")
+            # printLog(f"Error trying to auto-disconnect signal for orphaned item: {e}")
             return
 
         if signal_name in ("NewIcon", "NewAttentionIcon", "NewOverlayIcon"):
@@ -301,7 +308,7 @@ class TrayIconManager:
         elif signal_name == "NewStatus":
             if parameters and parameters.n_children() > 0:
                 status = parameters.get_child_value(0).get_string()
-                print(f"Item {item_data['original_address']} new status: {status}")
+                printLog(f"Item {item_data['original_address']} new status: {status}")
 
     def _update_item_icon(self, item_proxy, icon_widget: Gtk.Image):
         # (Implementation of _update_item_icon method as before)
@@ -360,7 +367,7 @@ class TrayIconManager:
                 proxy_name = item_proxy.get_name()
             else:
                 proxy_name = "unknown proxy"  # If the proxy is invalid
-            print(f"Error updating icon for {proxy_name}: {e}")
+            printLog(f"Error updating icon for {proxy_name}: {e}")
             icon_widget.set_from_icon_name("image-missing")
 
     def _update_item_tooltip(self, item_proxy, icon_widget: Gtk.Image):
@@ -387,7 +394,7 @@ class TrayIconManager:
                 proxy_name = item_proxy.get_name()
             else:
                 proxy_name = "unknown proxy"
-            print(f"Error updating tooltip for {proxy_name}: {e}")
+            printLog(f"Error updating tooltip for {proxy_name}: {e}")
             icon_widget.set_tooltip_text(None)
 
     def _on_item_clicked(
@@ -402,7 +409,7 @@ class TrayIconManager:
         # (Implementation of _on_item_clicked method as before)
         # Added check for valid item_proxy, as it may be None if creation failed.
         if not item_proxy:
-            print("Attempt to click item with invalid proxy.")
+            printLog("Attempt to click item with invalid proxy.")
             return
 
         button = gesture.get_current_button()
@@ -414,7 +421,7 @@ class TrayIconManager:
 
         if button == Gdk.BUTTON_PRIMARY:
             try:
-                print(f"Activating item (primary): {item_name_for_log}")
+                printLog(f"Activating item (primary): {item_name_for_log}")
                 item_proxy.call_sync(
                     "Activate",
                     GLib.Variant("(ii)", (int(x), int(y))),
@@ -423,7 +430,7 @@ class TrayIconManager:
                     None,
                 )
             except GLib.Error as e:
-                print(f"Error calling Activate on {item_name_for_log}: {e}")
+                printLog(f"Error calling Activate on {item_name_for_log}: {e}")
 
         elif button == Gdk.BUTTON_SECONDARY:
             self._show_context_menu(item_proxy, widget, int(x), int(y))
@@ -433,7 +440,7 @@ class TrayIconManager:
     ):
         # (Implementation of _show_context_menu method as before)
         if not item_proxy:
-            print("Attempt to show context menu with invalid proxy.")
+            printLog("Attempt to show context menu with invalid proxy.")
             return
 
         item_name_for_log = (
@@ -446,14 +453,14 @@ class TrayIconManager:
             if menu_path_variant:
                 menu_object_path = menu_path_variant.get_string()
                 if menu_object_path and menu_object_path != "/":
-                    print(
+                    printLog(
                         f"Item {item_name_for_log} has a D-Bus menu at: {menu_object_path}"
                     )
                     # Here would enter the complex D-Bus menu logic
                 # else:
-                # print(f"Item {item_name_for_log} doesn't have a valid menu path: {menu_object_path}")
+                # printLog(f"Item {item_name_for_log} doesn't have a valid menu path: {menu_object_path}")
 
-            print(f"Trying to call ContextMenu on {item_name_for_log}")
+            printLog(f"Trying to call ContextMenu on {item_name_for_log}")
             item_proxy.call_sync(
                 "ContextMenu",
                 GLib.Variant("(ii)", (click_x, click_y)),
@@ -463,4 +470,4 @@ class TrayIconManager:
             )
 
         except GLib.Error as e:
-            print(f"Error trying to show context menu for {item_name_for_log}: {e}")
+            printLog(f"Error trying to show context menu for {item_name_for_log}: {e}")
