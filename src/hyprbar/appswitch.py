@@ -7,29 +7,12 @@ from typing import List, Tuple
 from hyprpy import Hyprland
 from hyprbar.util import executeCommand
 from rich.console import Console
+from rich import inspect
 from gi.repository import Gtk  # pyright: ignore #noqa
 from gi.repository import GLib  # pyright: ignore # noqa
 from gi.repository import Pango  # pyright: ignore # noqa
 
 cl = Console()
-
-
-class ButtonManager:
-    def __init__(self, box):
-        self.box = box
-        self.buttons = {}  # Dicionário para armazenar referências
-
-    def add_button(self, button_id, label):
-        button = Gtk.Button(label=label)
-        self.buttons[button_id] = button
-        self.box.append(button)
-        return button
-
-    def remove_button(self, button_id):
-        if button_id in self.buttons:
-            button = self.buttons[button_id]
-            self.box.remove(button)
-            del self.buttons[button_id]
 
 
 class AppSwitch:
@@ -59,14 +42,14 @@ class AppSwitch:
     def updateAppSwitch(self) -> bool:
         # get current workspace
         workspace = self.hyprland.get_active_workspace()
-        total = 0
+        numberOfWindows = 0
         for window in workspace.windows:
+            numberOfWindows += 1
             # cl.print(f"Window: {window.__dict__}")
             # determine if workspace id and window.id exists on self.overview
             # feed self.overview with workspace id and number of windows
             # if window.address exits in self.overview, remove it
             if (workspace.id, window.address) not in self.overview:
-                total += 1
                 self.overview.append((workspace.id, window.address))
                 app_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=4)
                 # Try to get app icon
@@ -82,7 +65,7 @@ class AppSwitch:
                 # Create button with the box as content
                 button = Gtk.Button()
                 button.set_child(app_box)
-                button.set_name(f"app-{window.pid}")
+                button.set_name(f"{window.pid}")
                 button.add_css_class("appswitch")
                 # Add click event to focus the window
                 button.connect(
@@ -94,9 +77,10 @@ class AppSwitch:
 
                 self.box.append(button)
 
-            if len(self.overview) > total:
-                print(
-                    "Numero de botoes em overview ultrapassa o número no workspace..."
-                )
+            if len(self.overview) > workspace.window_count:
+                lastChild = self.box.get_last_child()
+                if lastChild:
+                    self.box.remove(lastChild)
+                    self.overview.pop()
 
         return True
