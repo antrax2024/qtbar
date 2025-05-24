@@ -1,6 +1,7 @@
 # this class is reponsible for appswitch hyprbar module
+# This is Gtk4 based component that displays a list of open applications
 #
-#
+from hyprpy.components import workspaces
 from hyprbar.config import ComponentConfig
 from typing import List, Tuple
 from hyprpy import Hyprland
@@ -11,6 +12,24 @@ from gi.repository import GLib  # pyright: ignore # noqa
 from gi.repository import Pango  # pyright: ignore # noqa
 
 cl = Console()
+
+
+class ButtonManager:
+    def __init__(self, box):
+        self.box = box
+        self.buttons = {}  # Dicionário para armazenar referências
+
+    def add_button(self, button_id, label):
+        button = Gtk.Button(label=label)
+        self.buttons[button_id] = button
+        self.box.append(button)
+        return button
+
+    def remove_button(self, button_id):
+        if button_id in self.buttons:
+            button = self.buttons[button_id]
+            self.box.remove(button)
+            del self.buttons[button_id]
 
 
 class AppSwitch:
@@ -29,15 +48,25 @@ class AppSwitch:
             lambda: self.updateAppSwitch(),
         )
 
+    def removeButtonByName(self, name):
+        child = self.box.get_first_child()
+        while child:
+            if child.get_name() == name:
+                self.box.remove(child)
+                break
+            child = child.get_next_sibling()
+
     def updateAppSwitch(self) -> bool:
         # get current workspace
         workspace = self.hyprland.get_active_workspace()
+        total = 0
         for window in workspace.windows:
-            cl.print(f"Window: {window.__dict__}")
+            # cl.print(f"Window: {window.__dict__}")
             # determine if workspace id and window.id exists on self.overview
             # feed self.overview with workspace id and number of windows
             # if window.address exits in self.overview, remove it
             if (workspace.id, window.address) not in self.overview:
+                total += 1
                 self.overview.append((workspace.id, window.address))
                 app_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=4)
                 # Try to get app icon
@@ -62,6 +91,12 @@ class AppSwitch:
                         f"hyprctl dispatch focuswindow address:{win_addr}"
                     ),
                 )
+
                 self.box.append(button)
+
+            if len(self.overview) > total:
+                print(
+                    "Numero de botoes em overview ultrapassa o número no workspace..."
+                )
 
         return True
