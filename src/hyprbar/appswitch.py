@@ -18,7 +18,7 @@ cl = Console()
 class AppSwitch:
     hyprland = Hyprland()  # instance of Hyprland
     windowsAddresses: List[str] = []
-    refresh: int = 300  # 300 miliseconds
+    refresh: int = 100  # 100 miliseconds
 
     def __init__(self, box: Gtk.Box, config: ComponentConfig) -> None:
         self.box = box
@@ -38,9 +38,20 @@ class AppSwitch:
             child = child.get_next_sibling()
 
     def updateAppSwitch(self) -> bool:
-        # get current workspace
-        workspace = self.hyprland.get_active_workspace()
-        for window in workspace.windows:
+        # Get current windows and their addresses
+        current_windows = self.hyprland.get_windows()
+        current_addresses = [window.address for window in current_windows]
+
+        # Remove buttons for closed windows
+        closed_addresses = [
+            addr for addr in self.windowsAddresses if addr not in current_addresses
+        ]
+        for address in closed_addresses:
+            self.removeButtonByName(address)
+            self.windowsAddresses.remove(address)
+
+        # Add buttons for new windows
+        for window in current_windows:
             if window.address not in self.windowsAddresses:
                 self.windowsAddresses.append(window.address)
                 app_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=4)
@@ -57,7 +68,7 @@ class AppSwitch:
                 # Create button with the box as content
                 button = Gtk.Button()
                 button.set_child(app_box)
-                button.set_name(f"{window.pid}")
+                button.set_name(f"{window.address}")
                 button.add_css_class("appswitch")
                 # Add click event to focus the window
                 button.connect(
@@ -68,11 +79,5 @@ class AppSwitch:
                 )
 
                 self.box.append(button)
-
-            if len(self.windowsAddresses) > len(self.hyprland.get_windows()):
-                lastChild = self.box.get_last_child()
-                if lastChild:
-                    self.box.remove(lastChild)
-                    self.windowsAddresses.pop()
 
         return True
