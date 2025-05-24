@@ -1,13 +1,11 @@
 # this class is reponsible for appswitch hyprbar module
 # This is Gtk4 based component that displays a list of open applications
 #
-from hyprpy.components import workspaces
 from hyprbar.config import ComponentConfig
-from typing import List, Tuple
+from typing import List
 from hyprpy import Hyprland
 from hyprbar.util import executeCommand
 from rich.console import Console
-from rich import inspect
 from gi.repository import Gtk  # pyright: ignore #noqa
 from gi.repository import GLib  # pyright: ignore # noqa
 from gi.repository import Pango  # pyright: ignore # noqa

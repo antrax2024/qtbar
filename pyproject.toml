@@ -9,6 +9,7 @@ requires-python = ">=3.13"
 dependencies = [
   "click>=8.2.0",
   "confz>=2.1.0",
+  "dbus-python>=1.4.0",
   "hyprpy>=0.2.0",
   "pygobject>=3.52.3",
   "pygobject-stubs>=2.13.0",
